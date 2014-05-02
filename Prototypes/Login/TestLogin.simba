@@ -1,0 +1,7 @@
+program TestLogin;
+{$i LoginScreen.simba}
+
+begin
+Login();
+
+end.

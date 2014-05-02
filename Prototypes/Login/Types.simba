@@ -1,0 +1,5 @@
+Type
+  TPoint() = Record
+    X : integer;
+    Y : integer;
+  End;
