@@ -1,2 +1,2 @@
-rs-ai
+Runescape Artificial Intelligence
 =====
