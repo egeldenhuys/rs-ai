@@ -1,4 +1,4 @@
-// Static colours used to identify the login screen.
+// Static colours and coordinates used to identify the login screen
 const
 TP_A : TPoint = [347, 387];
 CL_A : integer = 4507643;
@@ -9,9 +9,17 @@ CL_B : Integer = 5302014;
 TP_C : TPoint = [276, 244];
 CL_C : Integer = 16777215;
 
+
 // Static coordiantes for the text fields
 const
-TB_USER : Array[0..3] of integer = [272, 255, 520, 277];
+TB_USER : TBox = [272, 255, 520, 277];
+TB_PASS : TBox = [174, 330, 522, 347];
+
+function TBox.GetRandomPoint: TPoint;
+begin
+  result.x := randomRange(self.x1, self.x2);
+  result.y := randomRange(self.y1, self.y2);
+end;
 
 function AtLogin() : boolean
 begin
@@ -37,23 +45,10 @@ begin
 end;
 
 procedure EnterDetails(username, pass : string)
+var i : integer = 0;
+
 begin
-  // [0] - x1
-  // [1] - y1
-
-  // [2] - x2
-  // [3] - y2
-
-  MoveMouse(TB_USER[0], TB_USER[1]);
-  Wait(500);
-
-  MoveMouse(TB_USER[2], TB_USER[1]);
-  Wait(500);
-
-  MoveMouse(TB_USER[2], TB_USER[3]);
-  Wait(500);
-
-  MoveMouse(TB_USER[0], TB_USER[3]);
-  Wait(500);
+    MoveMouse(TB_USER.GetRandomPoint.X, TB_USER.GetRandomPoint.Y);
+    ClickMouse(0, 0, 1); // ClickMouse does not seem to actually move the mouse
 end;
 
