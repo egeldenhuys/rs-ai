@@ -1,7 +1,15 @@
 program TestLogin;
-{$i LoginScreen.simba}
+{$i Login.simba}
 
 begin
-Login();
+  ActivateClient();
+
+if AtLogin() = false then
+  begin
+    writeln('Not at the login screen, Exiting.');
+    exit();
+  end;
+
+  EnterDetails('','');
 
 end.

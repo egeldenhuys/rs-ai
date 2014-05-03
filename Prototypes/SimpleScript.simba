@@ -1,0 +1,11 @@
+program SimpleScript;
+
+(* Functions:
+  Login
+
+*)
+
+begin
+MoveMouse(0, 0);
+MoveMouse(500, 500);
+end.
