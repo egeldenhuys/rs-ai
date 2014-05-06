@@ -1,26 +1,56 @@
-(* Define
+(* Problem
   The default MoveMouse() function moves the mosue instatly to the
-  given location. This is not human like and needs to be changed.
+  given location. A method needs to be designed that simulates
+  human mouse movement.
 *)
 
-(* Plan
-  The first prototype will simply move the mouse 1 pixel at a time until
-  the axis matches the given axis.
-*)
+(*
+SimpleMouse
+~~~~
 
-procedure Mouse(x, y, size, sleep : integer);
+Description:
+  This procedure moves the mouse to the given coordinates.
+  It does so by moving it first in the x axis until it matches the target x value.
+  And then does the same for the y axis.
+
+Parameters:
+  x     - The target x coordinate
+  Y     - The target y coordinate
+  size  - How many pixels to move the mouse each increment.
+  sleep - How long to wait before moving the mouse again
+
+Remarks:
+  When the mouse is moved by hand it does not reach the destination.
+  It stops once it has moved a certain amount.
+
+Example:
+  SimpleMouse(800, 600, 5, 5);
+
+*)
+procedure SimpleMouse(x, y, size, sleep : integer);
 var
-mouseX, MouseY, distX, distY, i : Integer;
-inc : Integer;
+  mouseX, MouseY : Integer; // The current mouse position
+  distX, distY : Integer;   // The distance to move in each axis
+  i : Integer;              // Loop counter for moving the mouse
+  inc : Integer;            // The negative or positive value of size
 
 begin
+  (* Plan
+    The first prototype will simply move the mouse 1 pixel at a time until
+    the axis matches the given axis.
+  *)
+
+  // Get the initial mouse position for use in distance calculations
   GetMousePos(mouseX, MouseY);
 
   // Check how far we have to travel in each axis
+  // We need to divide by the size to find how many times we need to move
+  // the mouse by size amount.
   distX := Round((x - MouseX) / size);
   distY := Round((y - MouseY) / size);
 
-  // X
+  // == X Axis ==
+
   // Determine the direction
   if distX < 0 then
     inc := -size
@@ -30,13 +60,18 @@ begin
   // Move in the x axis until we are at the defined x position
   for i := 0 to Abs(distX) do
   begin
+
+    // We need the new position and use it as the reference point
+    // for the next movement
     GetMousePos(mouseX, MouseY);
+
     MoveMouse(mouseX + inc, MouseY);
     wait(sleep);
 
   end;
 
-  // Y
+  // == Y Axis ==
+
   // Determine the direction
   if distY < 0 then
     inc := -size
@@ -46,12 +81,15 @@ begin
   // Move in the y axis until we are at the defined y position
   for i := 0 to Abs(distY) do
   begin
+
+    // We need the new position and use it as the reference point
+    // for the next movement
     GetMousePos(mouseX, MouseY);
+
     MoveMouse(mouseX, MouseY + inc);
     wait(sleep);
 
   end;
-
 
 end;
 
