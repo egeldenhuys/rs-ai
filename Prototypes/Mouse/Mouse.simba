@@ -1,0 +1,57 @@
+(* Define
+  The default MoveMouse() function moves the mosue instatly to the
+  given location. This is not human like and needs to be changed.
+*)
+
+(* Plan
+  The first prototype will simply move the mouse 1 pixel at a time until
+  the axis matches the given axis.
+*)
+
+procedure Mouse(x, y, size, sleep : integer);
+var
+mouseX, MouseY, distX, distY, i : Integer;
+inc : Integer;
+
+begin
+  GetMousePos(mouseX, MouseY);
+
+  // Check how far we have to travel in each axis
+  distX := Round((x - MouseX) / size);
+  distY := Round((y - MouseY) / size);
+
+  // X
+  // Determine the direction
+  if distX < 0 then
+    inc := -size
+  else
+    inc := size
+
+  // Move in the x axis until we are at the defined x position
+  for i := 0 to Abs(distX) do
+  begin
+    GetMousePos(mouseX, MouseY);
+    MoveMouse(mouseX + inc, MouseY);
+    wait(sleep);
+
+  end;
+
+  // Y
+  // Determine the direction
+  if distY < 0 then
+    inc := -size
+  else
+    inc := size
+
+  // Move in the y axis until we are at the defined y position
+  for i := 0 to Abs(distY) do
+  begin
+    GetMousePos(mouseX, MouseY);
+    MoveMouse(mouseX, MouseY + inc);
+    wait(sleep);
+
+  end;
+
+
+end;
+

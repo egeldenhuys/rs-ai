@@ -1,0 +1,12 @@
+program TestMouse;
+{$i Mouse.simba}
+
+begin
+Mouse(500, 500, 5, 5);
+Mouse(0, 500, 5, 5);
+Mouse(123, 44, 5, 5);
+Mouse(900, 500, 5, 5);
+Mouse(0, 0, 5, 5);
+Mouse(45, 700, 5, 5);
+
+end.
