@@ -2,16 +2,10 @@ program TestMouse;
 {$i Mouse.simba}
 
 begin
-
-// SimpleMouse testing
-SimpleMouse(45, 900, 1, 1);
-SimpleMouse(500, 500, 5, 5);
-SimpleMouse(0, 500, 5, 5);
-SimpleMouse(123, 44, 5, 5);
-SimpleMouse(900, 500, 5, 5);
-SimpleMouse(0, 0, 5, 5);
-SimpleMouse(45, 700, 5, 5);
-SimpleMouse(0, 600, 5, 5);
-SimpleMouse(800, 600, 5, 5);
+mouse(0,0, 0.04);
+mouse(500,100, 0.04);
+mouse(1000,500, 0.04);
+mouse(798,423, 0.04);
+mouse(0,466, 0.04);
 
 end.
