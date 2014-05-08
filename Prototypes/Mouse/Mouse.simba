@@ -28,7 +28,7 @@ Example:
 
 *)
 
-procedure SimpleMouse(x, y, size, sleep : integer);
+procedure Mouse(x, y, size, sleep : integer);
 var
   mouseX, MouseY : Integer; // The current mouse position
   distX, distY : Integer;   // The distance to move in each axis
@@ -94,7 +94,7 @@ begin
 
 end;
 
-procedure Mouse(x, y: integer; speed: extended);
+procedure Mouse_2(x, y: integer; speed: extended);
 var
   mouseX, mouseY : integer;
   distTotal : extended;

@@ -1,11 +1,6 @@
 program TestMouse;
-{$i Mouse.simba}
 
 begin
-mouse(0,0, 0.04);
-mouse(500,100, 0.04);
-mouse(1000,500, 0.04);
-mouse(798,423, 0.04);
-mouse(0,466, 0.04);
+
 
 end.
