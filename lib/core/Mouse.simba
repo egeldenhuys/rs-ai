@@ -1,5 +1,5 @@
 (* Problem
-  The default MoveMouse() function moves the mosue instatly to the
+  The default MoveMouse() function moves the mouse instantly to the
   given location. A method needs to be designed that simulates
   human mouse movement.
 *)
