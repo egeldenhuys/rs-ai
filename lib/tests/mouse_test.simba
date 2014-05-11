@@ -1,6 +1,33 @@
 program mouse_test;
+{$i ../core/mouse.simba}
 
-{$i ../core/Mouse.simba}
+(*
+mouse_test
+~~~~~~~~~~
+
+Description:
+  This file is used to test the mouse functions
+
+*)
+
+(*
+GetMousePoints
+~~~~~~~~~~~~~~
+
+Description:
+  Random points used for testing the accuracy and movement of
+  the mouse functions.
+
+Example:
+  var
+    points : Array[0..19] of TPoint;
+    ...
+    points := GetMousePoints();
+
+Returns:
+  Returns an Array[0..19] of TPoint
+
+*)
 
 function GetMousePoints() : Array[0..19] of TPoint;
 var
@@ -33,50 +60,20 @@ begin
 
 end;
 
-procedure TestMouse2();
-var
-  points : Array[0..5] of TPoint;
-  speeds : Array[0..5] of Integer;
-  x, y : integer;
-  i, j, mX, mY : integer;
+(*
+TestMouse
+~~~~~~~~~
 
-begin
+Description:
+  This method is used to test the movement and accuracy
+  of the mouse functions
 
-  points[0] := [100, 100];
-  speeds[0] := 5;
+*)
 
-  points[1] := [800, 100];
-  speeds[1] := 10;
-
-  points[2] := [800, 200];
-  speeds[2] := 15;
-
-  points[3] := [100, 200];
-  speeds[3] := 25;
-
-  points[4] := [100, 300];
-  speeds[4] := 25;
-
-  points[5] := [800, 300];
-  speeds[5] := 30;
-
-  for i := 0 to 10 do
-  begin
-    x := RandomRange(0, 1900);
-    y := RandomRange(0, 900);
-
-    writeln('Testing point: ' + toStr(x) + ', ' + toStr(y));
-
-    RelativeMouse(x, y, 10);
-
-  end;
-
-end;
-
-procedure TestMouse();
+procedure TestMouse(MouseStyle : integer);
 var
   points : Array[0..19] of TPoint;
-  i, j, mX, mY : integer;
+  i : integer;
 
 begin
 
@@ -84,19 +81,44 @@ begin
 
   for i := 0 to 19 do
   begin
-    writeln('Testing point: ' + toStr(points[i].X) + ', ' + toStr(points[i].Y));
+    // writeln('Testing point: ' + toStr(points[i].X) + ', ' + toStr(points[i].Y));
 
-    DiagMouse(points[i].X, points[i].Y, 10);
+    case MouseStyle of
+      1:
+        begin
+          writeln('SimpleMouse()...');
+          SimpleMouse(points[i].X, points[i].Y, 5, 5);
+        end;
 
-  end;
+      2:
+        begin
+          writeln('EquationMouse()...');
+          EquationMouse(points[i].X, points[i].Y, 10);
+        end;
 
-end;
+      3:
+        begin
+          writeln('RelativeMouse()...');
+          RelativeMouse(points[i].X, points[i].Y, 10);
+        end;
 
+    end; // end case MouseStyle
+
+  end; // end for
+
+end; // end Testmouse()
+
+
+// Mouse style Constants
+const
+SIMPLE = 1;
+EQUATION = 2;
+RELATIVE = 3;
 
 begin
   ClearDebug();
   ActivateClient();
 
-  TestMouse();
+  TestMouse(2);
 
 end.
