@@ -201,28 +201,28 @@ begin
   time := 1;
   i := 1;
 
-  writeln('Mouse():');
-  writeln('x, y = ' + toStr(x) + ', ' + toStr(y));
-  writeln('Speed = ' + toStr(speed));
+  // **DEBUG** writeln('Mouse():');
+  // **DEBUG** writeln('x, y = ' + toStr(x) + ', ' + toStr(y));
+  // **DEBUG** writeln('Speed = ' + toStr(speed));
 
   GetMousePos(mX, mY);
-  writeln('mX, mY = ' + toStr(mX) + ', ' + toStr(mY));
+  // **DEBUG** writeln('mX, mY = ' + toStr(mX) + ', ' + toStr(mY));
 
   // Distance to travel (Diagonal/Hypotenuse)
   distT := sqrt(power(mX - x, 2) + power(mY - y, 2));
-  writeln('distT = ' + toStr(distT));
+  // **DEBUG** writeln('distT = ' + toStr(distT));
 
   // How long it must take to travel the total distance
   time := distT / speed;
-  writeln('time = ' + toStr(time));
+  // **DEBUG** writeln('time = ' + toStr(time));
 
   // Get the distance in the x axis
   distX := abs(mX - x);
-  writeln('distX = ' + toStr(distX));
+  // **DEBUG** writeln('distX = ' + toStr(distX));
 
   // By how much we increase in the x axis for every 1 time
   incX := distX / time;
-  writeln('incX = ' + toStr(incX));
+  // **DEBUG** writeln('incX = ' + toStr(incX));
 
   //calculate the gradient
   if (mx - x) <= 0 then
@@ -230,7 +230,7 @@ begin
 
   gradient := (mY - y) / (mX - x);
 
-  writeln('gradient = ' + toStr(gradient));
+  // **DEBUG** writeln('gradient = ' + toStr(gradient));
 
   // Direction
   if mX > x then
@@ -244,10 +244,10 @@ begin
   begin
 
     nextX := incX * i + mX;
-    //writeln('nextX = ' + toStr(nextX));
+    // **DEBUG** writeln('nextX = ' + toStr(nextX));
 
     nextY := gradient * nextX - gradient * mX + mY;
-    //writeln('nextY = ' + toStr(nextY));
+    // **DEBUG** writeln('nextY = ' + toStr(nextY));
 
     MoveMouse(Round(nextX), Round(nextY));
 
