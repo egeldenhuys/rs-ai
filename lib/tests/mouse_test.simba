@@ -101,6 +101,11 @@ begin
           writeln('RelativeMouse()...');
           RelativeMouse(points[i].X, points[i].Y, 10);
         end;
+      4:
+        begin
+          writeln('RandomSpeedMouse()...');
+          RandomSpeedMouse(points[i].X, points[i].Y, 7);
+        end;
 
     end; // end case MouseStyle
 
@@ -114,11 +119,19 @@ const
 SIMPLE = 1;
 EQUATION = 2;
 RELATIVE = 3;
+RANDOM_SPEED = 4;
+
+var
+loops : integer;
 
 begin
   ClearDebug();
   ActivateClient();
 
-  TestMouse(2);
+  for loops := 0 to 20 do
+  begin
+    TestMouse(4);
+  end;
+
 
 end.
