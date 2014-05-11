@@ -1,0 +1,67 @@
+program lib_tester;
+
+{$i core/Mouse.simba}
+
+function GetMousePoints() : Array[0..19] of TPoint;
+var
+  points : Array[0..19] of TPoint;
+
+begin
+
+  points[0] := [206, 347];
+  points[1] := [29, 59];
+  points[2] := [1745, 373];
+  points[3] := [790, 298];
+  points[4] := [1634, 120];
+  points[5] := [1164, 389];
+  points[6] := [954, 721];
+  points[7] := [131, 379];
+  points[8] := [941, 104];
+  points[9] := [71, 254];
+  points[10] := [1132, 318];
+  points[11] := [428, 336];
+  points[12] := [298, 187];
+  points[13] := [640, 272];
+  points[14] := [1419, 632];
+  points[15] := [533, 100];
+  points[16] := [1376, 516];
+  points[17] := [1287, 737];
+  points[18] := [319, 578];
+  points[19] := [1819, 706];
+
+  result := points;
+
+end;
+
+procedure TestMouse();
+var
+  points : Array[0..19] of TPoint;
+  i, j, mX, mY : integer;
+
+begin
+  ActivateClient();
+  points := GetMousePoints();
+
+  for i := 0 to 19 do
+  begin
+    writeln('Testing point: ' + toStr(points[i].X) + ', ' + toStr(points[i].Y));
+
+    SimpleMouse(points[i].X, points[i].Y, 5, 5);
+
+    GetMousePos(mX, mY);
+    if (mX <> points[i].X) OR (mY <> points[i].Y) then
+    begin
+      writeln('Point failed');
+    end;
+
+  end;
+
+end;
+
+
+begin
+  TestMouse();
+
+
+
+end.

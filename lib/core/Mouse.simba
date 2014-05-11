@@ -28,7 +28,7 @@ Example:
 
 *)
 
-procedure Mouse(x, y, size, sleep : integer);
+procedure SimpleMouse(x, y, size, sleep : integer);
 var
   mouseX, MouseY : Integer; // The current mouse position
   distX, distY : Integer;   // The distance to move in each axis
@@ -94,7 +94,7 @@ begin
 
 end;
 
-procedure Mouse_2(x, y: integer; speed: extended);
+procedure Mouse(x, y: integer; speed: extended);
 var
   mouseX, mouseY : integer;
   distTotal : extended;
@@ -115,19 +115,22 @@ speed := speed;
   distX := (x - MouseX);
   distY := (y - MouseY);
 
-  writeln('distX: ' + toStr(distX));
-  writeln('distY: ' + toStr(distY));
+  // ** DEBUG **
+  // writeln('distX: ' + toStr(distX));
+  // writeln('distY: ' + toStr(distY));
 
   // Calculate the total distance
   distTotal := (sqrt(power(distX, 2) + power(distY, 2)));
 
-  writeln('distTotal: ' + toStr(distTotal));
+  // ** DEBUG **
+  // writeln('distTotal: ' + toStr(distTotal));
 
   // speed = dist / time
   // Calculate how long it must take for the mouse to move the total dist.
   time := distTotal * speed;
 
-  writeln('time: ' + toStr(time));
+  // ** DEBUG **
+  // writeln('time: ' + toStr(time));
 
   // We know how long the mouse will be moving (time)
   // Make the mouse move in the x axis for the amount of time
@@ -138,13 +141,15 @@ speed := speed;
   incX := (distX / time);
   incY := (distY / time);
 
-  writeln('incX: ' + toStr(incX));
-  writeln('incY: ' + toStr(incY));
+  // ** DEBUG **
+  // writeln('incX: ' + toStr(incX));
+  // writeln('incY: ' + toStr(incY));
 
   for i := 0 to Ceil(time) do
   begin
     GetMousePos(mouseX, mouseY);
     MoveMouse(Floor(mouseX + incX), Floor(mouseY + incY));
+    // ** DEBUG **
     //writeln('New Position: ' + toStr(Floor(mouseX + incX)) + ', ' + toStr(Floor(mouseY + incY)));
     wait(Ceil(time));
   end;

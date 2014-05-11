@@ -1,6 +1,0 @@
-program MouseTest;
-{$i Mouse.simba}
-
-begin
-
-end.

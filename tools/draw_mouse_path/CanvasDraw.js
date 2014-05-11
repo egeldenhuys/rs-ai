@@ -37,7 +37,6 @@ function draw() {
 	ctx.fillRect(1287 -8 -w/2, 737 -8 -h/2, w, h);
 	ctx.fillRect(319  -8 -w/2, 578 -8 -h/2, w, h);
 	ctx.fillRect(1819 -8 -w/2, 706 -8 -h/2, w, h);
-	ctx.fillRect(847  -8 -w/2, 870 -8 -h/2, w, h);
 
 	ctx.globalAlpha=0.4;
 	ctx.fillStyle = 'red';
