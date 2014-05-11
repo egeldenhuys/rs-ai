@@ -1,12 +1,11 @@
-(* Problem
-  The default MoveMouse() function moves the mouse instantly to the
-  given location. A method needs to be designed that simulates
-  human mouse movement.
+(* Aim
+  The aim of this file is to provide procedures to move the mouse.
+  The mouse movement has to be as humanly as possible.
 *)
 
 (*
-SimpleMouse
-~~~~
+SimpleMouse (Success)
+~~~~~~~~~~~
 
 Description:
   This procedure moves the mouse to the given coordinates.
@@ -94,7 +93,20 @@ begin
 
 end;
 
-procedure Mouse(x, y: integer; speed: extended);
+(*
+DiagMouse (FAIL)
+~~~~~~~~~
+
+Description:
+  This procedure attempts to move the mouse directly to the target
+  i.e both axis at the same time. It is not very succesfull.
+
+Remarks:
+  The move function looks very good even while moving the mouse by hand.
+
+*)
+
+procedure DiagMouse_FAIL(x, y: integer; speed: extended);
 var
   mouseX, mouseY : integer;
   distTotal : extended;
@@ -105,8 +117,6 @@ var
 
 
 begin
-
-speed := speed;
 
   // Get the current mouse position
   GetMousePos(mouseX, mouseY);
@@ -151,11 +161,185 @@ speed := speed;
     MoveMouse(Floor(mouseX + incX), Floor(mouseY + incY));
     // ** DEBUG **
     //writeln('New Position: ' + toStr(Floor(mouseX + incX)) + ', ' + toStr(Floor(mouseY + incY)));
-    wait(Ceil(time));
+    wait(1);
   end;
 
+end;
+
+(*
+EquationMouse (Success)
+~~~~~~~~~~~~~
+
+Description:
+  Finds the straight line equation from the current mouse position
+  to the target. Every time it moves a set distance towards it.
+
+Paramaters:
+  x, y    - The target coordinates
+  speed   - 'Speed = distance/time'
+            How fast to move the mouse
+Remarks:
+  It it not possible to move the mouse by hand while this method is
+  running. It would be required to recalculate the line equation
+  when the mouse is no longer on the same line and this takes up resources.
+
+Improvements that can be made:
+  Move relative to the current mouse position. This way the mouse can be
+  accidentally moved by hand and still look human.
+
+Example:
+  EquationMouse(500, 500, 10);
+
+*)
+
+procedure EquationMouse(x, y : integer; speed : extended);
+var
+mX, mY, i : integer;
+time, distT, distX, incX, nextX, nextY, gradient : extended;
+
+begin
+  time := 1;
+  i := 1;
+
+  writeln('Mouse():');
+  writeln('x, y = ' + toStr(x) + ', ' + toStr(y));
+  writeln('Speed = ' + toStr(speed));
+
+  GetMousePos(mX, mY);
+  writeln('mX, mY = ' + toStr(mX) + ', ' + toStr(mY));
+
+  // Distance to travel (Diagonal/Hypotenuse)
+  distT := sqrt(power(mX - x, 2) + power(mY - y, 2));
+  writeln('distT = ' + toStr(distT));
+
+  // How long it must take to travel the total distance
+  time := distT / speed;
+  writeln('time = ' + toStr(time));
+
+  // Get the distance in the x axis
+  distX := abs(mX - x);
+  writeln('distX = ' + toStr(distX));
+
+  // By how much we increase in the x axis for every 1 time
+  incX := distX / time;
+  writeln('incX = ' + toStr(incX));
+
+  //calculate the gradient
+  if (mx - x) <= 0 then
+    x := x - 10;
+
+  gradient := (mY - y) / (mX - x);
+
+  writeln('gradient = ' + toStr(gradient));
+
+  // Direction
+  if mX > x then
+    incX := incX * -1;
+
+  // Functions
+  // x = f(t) = incX * t + mX
+  // y = f(x) = mx + b
+
+  for i := 0 to Round(time) do
+  begin
+
+    nextX := incX * i + mX;
+    //writeln('nextX = ' + toStr(nextX));
+
+    nextY := gradient * nextX - gradient * mX + mY;
+    //writeln('nextY = ' + toStr(nextY));
+
+    MoveMouse(Round(nextX), Round(nextY));
+
+    wait(10);
+    //i := i + 10;
+
+  end;
 
 end;
+
+(*
+RelativeMouse
+~~~~~~~~~~~~~
+
+Description:
+  Has similar behavior to EquationMouse. Moves in a straight line
+  towards the target. The mouse can be moved by hand and it will
+  look relatively normal, i.e not jumping the same as in EquationMouse.
+  It will continue to move towards the target even when the mouse has
+  been moved by hand. Each loop iteration it gets the next point
+  to move to.
+
+Paramaters:
+  x, y    - The target coordinates
+  speed   - 'Speed = distance/time'
+            How fast to move the mouse
+
+Remarks:
+  The wait time between movements can still be tweaked.
+  This method seems to work the best so far.
+  The while loop can be improved to be more accurate.
+
+Example:
+  RelativeMouse(500, 500, 10);
+
+*)
+procedure RelativeMouse(x, y, speed : integer);
+var
+mX, mY, i : integer;
+time, distT, distX, distY, incX, incY, nextX, nextY, gradient : extended;
+
+begin
+  // ** DEBUG ** writeln('Mouse():');
+  // ** DEBUG ** writeln('x, y = ' + toStr(x) + ', ' + toStr(y));
+  // ** DEBUG ** writeln('Speed = ' + toStr(speed));
+  time := 3;
+
+  while time > 2 do
+  begin
+
+  GetMousePos(mX, mY);
+  // ** DEBUG ** writeln('mX, mY = ' + toStr(mX) + ', ' + toStr(mY));
+
+  // Distance to travel (Diagonal/Hypotenuse)
+  distT := sqrt(power(mX - x, 2) + power(mY - y, 2));
+  // ** DEBUG ** writeln('distT = ' + toStr(distT));
+
+  // How long it must take to travel the total distance
+  time := distT / speed;
+  // ** DEBUG ** writeln('time = ' + toStr(time));
+
+  // Get the distance in the x axis
+  distX := abs(mX - x);
+  // ** DEBUG ** writeln('distX = ' + toStr(distX));
+
+  // Get the distance in the y axis
+  distY := abs(mY - y);
+  // ** DEBUG ** writeln('distY = ' + toStr(distY));
+
+  // By how much we increase in the x axis for every 1 time
+  incX := distX / time;
+  // ** DEBUG ** writeln('incX = ' + toStr(incX));
+
+  // By how much we increase in the y axis for every 1 time
+  incY := distY / time;
+  // ** DEBUG ** writeln('incY = ' + toStr(incY));
+
+  // Direction
+  if mX > x then
+    incX := -incX;
+
+  if mY > y then
+    incY := -incY;
+
+  wait(10);
+  GetMousePos(mX, mY);
+
+  MoveMouse(mX + Round(incX), mY + Round(incY));
+  end;
+
+end;
+
 
 
 
