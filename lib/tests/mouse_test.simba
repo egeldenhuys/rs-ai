@@ -29,33 +29,72 @@ Returns:
 
 *)
 
+procedure PrintPoints(totalPoints : integer);
+var
+  i, x, y : integer;
+  points : Array of TPoint;
+
+begin
+
+  SetLength(points, totalPoints - 1);
+
+  // Generate the points
+  for i := 0 to totalPoints - 1 do
+  begin
+    x := RandomRange(8, 1634);
+    y := RandomRange(8, 880);
+    points[i].X := x;
+    points[i].Y := y;
+
+  end;
+
+
+  writeln('------- SIMBA ----------');
+
+  for i := 0 to totalPoints - 1 do
+  begin
+    writeln('points[' + toStr(i) + '] := [' +
+    toStr(points[i].X) + ', ' +
+    toStr(points[i].Y) + '];');
+  end;
+
+  writeln('------- JS ----------');
+  for i := 0 to totalPoints - 1 do
+  begin
+    writeln('ctx.fillRect(' +
+    toStr(points[i].X) + ' -8 -w/2, ' +
+    toStr(points[i].Y) + ' -8 -h/2, w, h);');
+  end;
+
+
+end;
+
 function GetMousePoints() : Array[0..19] of TPoint;
 var
   points : Array[0..19] of TPoint;
 
 begin
 
-  points[0] := [206, 347];
-  points[1] := [29, 59];
-  points[2] := [1745, 373];
-  points[3] := [790, 298];
-  points[4] := [1634, 120];
-  points[5] := [1164, 389];
-  points[6] := [954, 721];
-  points[7] := [131, 379];
-  points[8] := [941, 104];
-  points[9] := [71, 254];
-  points[10] := [1132, 318];
-  points[11] := [428, 336];
-  points[12] := [298, 187];
-  points[13] := [640, 272];
-  points[14] := [1419, 632];
-  points[15] := [533, 100];
-  points[16] := [1376, 516];
-  points[17] := [1287, 737];
-  points[18] := [319, 578];
-  points[19] := [1819, 706];
-
+ points[0] := [305, 557];
+points[1] := [1181, 849];
+points[2] := [880, 664];
+points[3] := [267, 700];
+points[4] := [1394, 273];
+points[5] := [729, 514];
+points[6] := [582, 664];
+points[7] := [285, 852];
+points[8] := [340, 390];
+points[9] := [586, 719];
+points[10] := [341, 348];
+points[11] := [1335, 819];
+points[12] := [1266, 539];
+points[13] := [745, 506];
+points[14] := [979, 501];
+points[15] := [1357, 620];
+points[16] := [1610, 832];
+points[17] := [1379, 168];
+points[18] := [246, 384];
+points[19] := [1466, 700];
   result := points;
 
 end;
@@ -104,7 +143,7 @@ begin
       4:
         begin
           writeln('RandomSpeedMouse()...');
-          RandomSpeedMouse(points[i].X, points[i].Y, 7);
+          RandomSpeedMouse(points[i].X, points[i].Y, 10);
         end;
 
     end; // end case MouseStyle
@@ -127,11 +166,11 @@ loops : integer;
 begin
   ClearDebug();
   ActivateClient();
+  //PrintPoints(20);
 
   for loops := 0 to 20 do
   begin
     TestMouse(4);
   end;
-
 
 end.
