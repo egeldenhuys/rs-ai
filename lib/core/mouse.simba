@@ -445,9 +445,13 @@ begin
   // ** DEBUG ** writeln('x, y = ' + toStr(x) + ', ' + toStr(y));
   // ** DEBUG ** writeln('Speed = ' + toStr(speed));
 
-  time := 3;
   speedOrig := speed / 2;
-  distT := 1;
+
+  // Set initial values to avoid errors
+  GetMousePos(mX, mY);
+  distT := sqrt(power(mX - x, 2) + power(mY - y, 2));
+  speed := speedOrig - RandomRange(-Round(speedOrig), Round(speedOrig / 2));
+  time := distT / speed;
 
   while time > 2 do
   begin
