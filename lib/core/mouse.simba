@@ -412,6 +412,94 @@ begin
   end;
 end;
 
+(*
+Mouse
+~~~~~~~~~~~~~~~~~~~
+
+Description:
+  .
+
+Paramaters:
+  .
+
+Notes:
+  .
+
+Example:
+  .
+
+
+*)
+
+// Mouse click constants
+const
+  MOUSE_MOVE = 0;
+
+procedure Mouse(x, y, click : integer; speed : extended);
+var
+mX, mY, i : integer;
+time, distT, distX, distY, incX, incY, nextX, nextY, speedOrig : extended;
+
+begin
+  // ** DEBUG ** writeln('Mouse():');
+  // ** DEBUG ** writeln('x, y = ' + toStr(x) + ', ' + toStr(y));
+  // ** DEBUG ** writeln('Speed = ' + toStr(speed));
+
+  time := 3;
+  speedOrig := speed / 2;
+  distT := 1;
+
+  while time > 2 do
+  begin
+
+    speed := speedOrig - RandomRange(-Round(speedOrig), Round(speedOrig / 2));
+
+    GetMousePos(mX, mY);
+
+    // ** DEBUG ** writeln('mX, mY = ' + toStr(mX) + ', ' + toStr(mY));
+
+    distT := sqrt(power(mX - x, 2) + power(mY - y, 2));
+
+    // ** DEBUG ** writeln('distT = ' + toStr(distT));
+
+    time := distT / speed;
+
+    // ** DEBUG ** writeln('time = ' + toStr(time));
+
+    distX := abs(mX - x);
+
+    // ** DEBUG ** writeln('distX = ' + toStr(distX));
+
+    distY := abs(mY - y);
+
+    // ** DEBUG ** writeln('distY = ' + toStr(distY));
+
+    incX := distX / time + RandomRange(0, Round(time / 30)) + randomRange(-2, 2);
+
+    // ** DEBUG ** writeln('incX = ' + toStr(incX));
+
+    incY := distY / time + RandomRange(0, Round(time / 30)) + randomRange(-2, 2);
+
+    // ** DEBUG ** writeln('incY = ' + toStr(incY));
+
+    // Direction
+    if mX > x then
+      incX := -incX;
+
+    if mY > y then
+      incY := -incY;
+
+    wait(RandomRange(0, 5));
+    GetMousePos(mX, mY);
+
+    MoveMouse(mX + Round(incX), mY + Round(incY));
+  end;
+
+    wait(RandomRange(0, 5));
+    MoveMouse(x, y);
+end;
+
+
 
 
 

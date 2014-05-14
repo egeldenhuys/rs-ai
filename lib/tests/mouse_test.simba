@@ -145,6 +145,11 @@ begin
           writeln('RandomSpeedMouse()...');
           RandomSpeedMouse(points[i].X, points[i].Y, 10);
         end;
+      5:
+        begin
+          writeln('Mouse()...');
+          Mouse(points[i].X, points[i].Y, MOUSE_MOVE, 10);
+        end;
 
     end; // end case MouseStyle
 
@@ -159,6 +164,7 @@ SIMPLE = 1;
 EQUATION = 2;
 RELATIVE = 3;
 RANDOM_SPEED = 4;
+LATEST_MOUSE = 5;
 
 var
 loops : integer;
@@ -168,9 +174,9 @@ begin
   ActivateClient();
   //PrintPoints(20);
 
-  for loops := 0 to 20 do
-  begin
-    TestMouse(4);
-  end;
+  //for loops := 0 to 20 do
+  //begin
+    TestMouse(5);
+  //end;
 
 end.
