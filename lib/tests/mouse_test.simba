@@ -1,0 +1,203 @@
+program mouse_test;
+{$i ../core/mouse.simba}
+
+(*
+mouse_test
+~~~~~~~~~~
+
+Description:
+  This file is used to test the mouse functions
+
+*)
+
+(*
+GetMousePoints
+~~~~~~~~~~~~~~
+
+Description:
+  Random points used for testing the accuracy and movement of
+  the mouse functions.
+
+Example:
+  var
+    points : Array[0..19] of TPoint;
+    ...
+    points := GetMousePoints();
+
+Returns:
+  Returns an Array[0..19] of TPoint
+
+*)
+
+procedure PrintPoints(totalPoints : integer);
+var
+  i, x, y : integer;
+  points : Array of TPoint;
+
+begin
+
+  SetLength(points, totalPoints - 1);
+
+  // Generate the points
+  for i := 0 to totalPoints - 1 do
+  begin
+    x := RandomRange(8, 1634);
+    y := RandomRange(8, 880);
+    points[i].X := x;
+    points[i].Y := y;
+
+  end;
+
+
+  writeln('------- SIMBA ----------');
+
+  for i := 0 to totalPoints - 1 do
+  begin
+    writeln('points[' + toStr(i) + '] := [' +
+    toStr(points[i].X) + ', ' +
+    toStr(points[i].Y) + '];');
+  end;
+
+  writeln('------- JS ----------');
+  for i := 0 to totalPoints - 1 do
+  begin
+    writeln('ctx.fillRect(' +
+    toStr(points[i].X) + ' -8 -w/2, ' +
+    toStr(points[i].Y) + ' -8 -h/2, w, h);');
+  end;
+
+
+end;
+
+function GetMousePoints() : Array[0..19] of TPoint;
+var
+  points : Array[0..19] of TPoint;
+
+begin
+
+points[0] := [305, 557];
+points[1] := [1181, 849];
+points[2] := [880, 664];
+points[3] := [267, 700];
+points[4] := [1394, 273];
+points[5] := [729, 514];
+points[6] := [582, 664];
+points[7] := [285, 852];
+points[8] := [340, 390];
+points[9] := [586, 719];
+points[10] := [341, 348];
+points[11] := [1335, 819];
+points[12] := [1266, 539];
+points[13] := [745, 506];
+points[14] := [979, 501];
+points[15] := [1357, 620];
+points[16] := [1610, 832];
+points[17] := [1379, 168];
+points[18] := [246, 384];
+points[19] := [1466, 700];
+  result := points;
+
+end;
+
+(*
+TestMouse
+~~~~~~~~~
+
+Description:
+  This method is used to test the movement and accuracy
+  of the mouse functions
+
+*)
+
+procedure TestMouse(MouseStyle, speed : integer);
+var
+  points : Array[0..19] of TPoint;
+  i, mX, mY : integer;
+
+
+begin
+
+  points := GetMousePoints();
+
+  for i := 0 to 19 do
+  begin
+    // writeln('Testing point: ' + toStr(points[i].X) + ', ' + toStr(points[i].Y));
+
+    case MouseStyle of
+      1:
+        begin
+          writeln('SimpleMouse()...');
+          SimpleMouse(points[i].X, points[i].Y, 5, 5);
+        end;
+
+      2:
+        begin
+          writeln('EquationMouse()...');
+          EquationMouse(points[i].X, points[i].Y, 10);
+        end;
+
+      3:
+        begin
+          writeln('RelativeMouse()...');
+          RelativeMouse(points[i].X, points[i].Y, 10);
+        end;
+      4:
+        begin
+          // Print paramaters
+          writeln('Testing: RandomSpeedMouse(' + toStr(points[i].X) + ', ' +
+          toStr(points[i].Y) + ', ' +
+          toStr(MOUSE_MOVE) + ', ' +
+          toStr(speed) + ')');
+
+          RandomSpeedMouse(points[i].X, points[i].Y, 10);
+        end;
+      5:
+        begin
+
+          // Print paramaters
+          writeln('Testing: Mouse(' + toStr(points[i].X) + ', ' +
+          toStr(points[i].Y) + ', ' +
+          toStr(MOUSE_MOVE) + ', ' +
+          toStr(speed) + ')');
+
+          Mouse(points[i].X, points[i].Y, MOUSE_RIGHT, speed);
+
+        end;
+
+    end; // end case MouseStyle
+
+    // Test the location of the mouse
+    GetMousePos(mX, mY);
+
+    if mX <> points[i].X then
+      writeln('Failed: ' + toStr(mX) + ', ' + toStr(mY))
+    else
+      writeln('Passed');
+
+  end; // end for
+
+end; // end Testmouse()
+
+
+// Mouse style Constants
+const
+SIMPLE = 1;
+EQUATION = 2;
+RELATIVE = 3;
+RANDOM_SPEED = 4;
+LATEST_MOUSE = 5;
+
+var
+loops : integer;
+
+begin
+  ClearDebug();
+  ActivateClient();
+  //PrintPoints(20);
+
+  //for loops := 0 to 20 do
+  //begin
+    TestMouse(5, 10);
+  //end;
+
+end.
