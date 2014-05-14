@@ -1,5 +1,5 @@
 program TestLogin;
-{$i Login.simba}
+{$i ../interfaces/lobby.simba}
 
 begin
   ActivateClient();
@@ -10,6 +10,6 @@ if AtLogin() = false then
     exit();
   end;
 
-  EnterDetails('','');
+  EnterDetails('Username','');
 
 end.

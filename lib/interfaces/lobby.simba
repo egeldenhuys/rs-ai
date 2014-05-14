@@ -1,3 +1,6 @@
+{$include_once ../core/mouse.simba}
+{$include_once ../core/keyboard.simba}
+
 // Static colours and coordinates used to identify the login screen
 const
 TP_A : TPoint = [347, 387];
@@ -21,6 +24,28 @@ begin
   result.y := randomRange(self.y1, self.y2);
 end;
 
+(*
+AtLogin
+=======
+
+Description:
+    Checks if the login screen is open
+
+Parameters:
+    None.
+
+Return
+    True  - if the login screen is open
+    False - if the login screen is not open
+
+Notes:
+    ...
+
+Example:
+    if NOT AtLogin() then
+      exit;
+
+*)
 function AtLogin() : boolean
 begin
   writeln('AtLogin(): Detecting login screen...');
@@ -48,7 +73,12 @@ procedure EnterDetails(username, pass : string)
 var i : integer = 0;
 
 begin
-    MoveMouse(TB_USER.GetRandomPoint.X, TB_USER.GetRandomPoint.Y);
-    ClickMouse(0, 0, 1); // ClickMouse does not seem to actually move the mouse
+  Mouse(TB_USER.GetRandomPoint.X, TB_USER.GetRandomPoint.Y, MOUSE_LEFT, 10);
+  SendText(username);
+
+  KeyDown(VK_TAB);
+  Wait(10 + Random(50));
+  KeyUp(VK_TAB);
+
 end;
 
