@@ -433,7 +433,7 @@ Example:
 
 // Mouse click constants
 const
-  MOUSE_MOVE = 0;
+  MOUSE_MOVE = -1;
 
 procedure Mouse(x, y, click : integer; speed : extended);
 var
@@ -495,8 +495,18 @@ begin
     MoveMouse(mX + Round(incX), mY + Round(incY));
   end;
 
-    wait(RandomRange(0, 5));
-    MoveMouse(x, y);
+  // This is to fix the mouse not actually moving until  t = 0
+  wait(RandomRange(0, 5));
+  MoveMouse(x, y);
+
+  if click <> MOUSE_MOVE then
+  begin
+    // Click the mouse if it is specified
+    wait(RandomRange(50, 100));
+    ClickMouse(x, y, click);
+  end;
+
+
 end;
 
 
