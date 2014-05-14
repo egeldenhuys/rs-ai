@@ -75,7 +75,7 @@ var
 
 begin
 
- points[0] := [305, 557];
+points[0] := [305, 557];
 points[1] := [1181, 849];
 points[2] := [880, 664];
 points[3] := [267, 700];
@@ -109,10 +109,11 @@ Description:
 
 *)
 
-procedure TestMouse(MouseStyle : integer);
+procedure TestMouse(MouseStyle, speed : integer);
 var
   points : Array[0..19] of TPoint;
-  i : integer;
+  i, mX, mY : integer;
+
 
 begin
 
@@ -142,16 +143,36 @@ begin
         end;
       4:
         begin
-          writeln('RandomSpeedMouse()...');
+          // Print paramaters
+          writeln('Testing: RandomSpeedMouse(' + toStr(points[i].X) + ', ' +
+          toStr(points[i].Y) + ', ' +
+          toStr(MOUSE_MOVE) + ', ' +
+          toStr(speed) + ')');
+
           RandomSpeedMouse(points[i].X, points[i].Y, 10);
         end;
       5:
         begin
-          writeln('Mouse()...');
-          Mouse(points[i].X, points[i].Y, MOUSE_MOVE, 10);
+
+          // Print paramaters
+          writeln('Testing: Mouse(' + toStr(points[i].X) + ', ' +
+          toStr(points[i].Y) + ', ' +
+          toStr(MOUSE_MOVE) + ', ' +
+          toStr(speed) + ')');
+
+          Mouse(points[i].X, points[i].Y, MOUSE_MOVE, speed);
+
         end;
 
     end; // end case MouseStyle
+
+    // Test the location of the mouse
+    GetMousePos(mX, mY);
+
+    if mX <> points[i].X then
+      writeln('Failed: ' + toStr(mX) + ', ' + toStr(mY))
+    else
+      writeln('Passed');
 
   end; // end for
 
@@ -176,7 +197,7 @@ begin
 
   //for loops := 0 to 20 do
   //begin
-    TestMouse(5);
+    TestMouse(4, 10);
   //end;
 
 end.
