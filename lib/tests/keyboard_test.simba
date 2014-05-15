@@ -1,0 +1,8 @@
+program new;
+{$i ../core/keyboard.simba}
+
+begin
+  TypeText('a');
+
+
+end.

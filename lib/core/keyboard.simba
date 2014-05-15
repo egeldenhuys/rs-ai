@@ -3,26 +3,28 @@ keyboard
 ====
 
 Description:
-  Provides functions for entering text into the game
+  Provides functions for entering text into the game.
 
 *)
 
-const
-  MIN_WAIT = 20;
-  RND_WAIT = 40;
+(*
+name
+====
 
-procedure SendText(text : string);
-var
-  i : integer;
+Description:
 
+Paramaters:
+
+Notes:
+
+Example:
+
+*)
+procedure TypeText(text : string);
 begin
-  for i := 1 to Length(text) do
-  begin
-
-    SendKeys(text[i], MIN_WAIT + Random(RND_WAIT) , MIN_WAIT + Random(RND_WAIT));
-
-    wait(MIN_WAIT + Random(RND_WAIT));
-  end;
+  KeyDown(ord('B') + 48);
+  wait(100);
+  KeyUp(ord('B') + 48);
 
 end;
 
