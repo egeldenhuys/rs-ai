@@ -1,11 +1,13 @@
 Runescape Artificial Intelligence
 =====
 
-## Features
-- Coin Generating Methods
- * Filling vials
- * Softening Clay
-- Display the coins per hour for each method based on current prices
-- Collect and display statistics
-- Multiple instances of the AI needs to be able to run from a single computer
-- Send commands to the AI using a console
+## Needs
+- AI methods
+- Mouse simulation
+- Keyboard simulation
+- OCR
+- Console
+- Statistics
+- Human Behaviour
+- Multiple instances on the same computer
+- Library of functions
