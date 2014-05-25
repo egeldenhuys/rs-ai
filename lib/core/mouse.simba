@@ -5,7 +5,7 @@
 
 (*
 SimpleMouse (Success)
-~~~~~~~~~~~
+===========
 
 Description:
   This procedure moves the mouse to the given coordinates.
@@ -95,7 +95,7 @@ end;
 
 (*
 DiagMouse (FAIL)
-~~~~~~~~~
+=========
 
 Description:
   This procedure attempts to move the mouse directly to the target
@@ -168,7 +168,7 @@ end;
 
 (*
 EquationMouse (Success)
-~~~~~~~~~~~~~
+=============
 
 Description:
   Finds the straight line equation from the current mouse position
@@ -259,8 +259,8 @@ begin
 end;
 
 (*
-RelativeMouse
-~~~~~~~~~~~~~
+RelativeMouse (Success)
+=============
 
 Description:
   Has similar behavior to EquationMouse. Moves in a straight line
@@ -341,8 +341,8 @@ begin
 end;
 
 (*
-RandomSpeedMouse
-~~~~~~~~~~~~~~~~~~~
+RandomSpeedMouse (Success)
+================
 Aim:
   Add variation to the speed and point movement.
 
@@ -417,7 +417,7 @@ const
   MOUSE_MOVE = -1;
 
 (*
-Mouse
+Mouse (Final)
 =====
 
 Description:
