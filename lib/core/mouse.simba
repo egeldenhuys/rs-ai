@@ -412,28 +412,36 @@ begin
   end;
 end;
 
-(*
-Mouse
-~~~~~~~~~~~~~~~~~~~
-
-Description:
-  .
-
-Paramaters:
-  .
-
-Notes:
-  .
-
-Example:
-  .
-
-
-*)
-
 // Mouse click constants
 const
   MOUSE_MOVE = -1;
+
+(*
+Mouse
+=====
+
+Description:
+  Moves to mouse to the target and optionally clicks a mouse button. 
+
+Paramaters:
+  x, y    - The target coordinates
+  click   - Which mouse button to click at the target.
+              MOUSE_LEFT
+              MOUSE_RIGHT
+              MOUSE_MOVE
+  speed   - How fast to move the mouse
+            (speed = distance / time)
+
+Notes:
+  Movement is randomised along the way.
+  Speed is also randomised to a certain extent.
+  Has similar behavior to EquationMouse. The next location is found
+  relative to the current location.
+
+Example:
+  Mouse(100, 300, MOUSE_LEFT, 5);
+  
+*)
 
 procedure Mouse(x, y, click : integer; speed : extended);
 var
