@@ -21,10 +21,18 @@ Example:
 
 *)
 procedure TypeText(text : string);
+var
+  i : integer;
+
 begin
-  KeyDown(ord('B') + 48);
-  wait(100);
-  KeyUp(ord('B') + 48);
+  for i := 1 to Length(text) do
+  begin
+    KeyDown(GetKeyCode(text[i]));
+    wait(RandomRange(50, 90));
+    KeyUp(GetKeyCode(text[i]));
+    wait(RandomRange(50, 400));
+  end;
+
 
 end;
 

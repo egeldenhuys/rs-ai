@@ -1,8 +1,10 @@
 program new;
 {$i ../core/keyboard.simba}
+{$i ../core/mouse.simba}
 
 begin
-  TypeText('a');
+  //Mouse(432, 480, MOUSE_LEFT, 5);
+  TypeText('poopy');
 
 
 end.
