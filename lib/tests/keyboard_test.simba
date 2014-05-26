@@ -1,0 +1,17 @@
+(*
+keyboard_test
+=============
+
+Decsription:
+  This program is used to test and demonstrage the functions
+  of the keyboard class
+*)
+
+program keyboard_test;
+{$i ../core/keyboard.simba}
+
+begin
+
+  TypeText('poopy?!@#', true);
+
+end.
