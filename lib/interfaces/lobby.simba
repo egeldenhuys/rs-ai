@@ -1,3 +1,12 @@
+(*
+lobby
+=====
+
+Description:
+  Provides functions related to the login and lobby.
+
+*)
+
 {$include_once ../core/mouse.simba}
 {$include_once ../core/keyboard.simba}
 
@@ -25,7 +34,7 @@ begin
 end;
 
 (*
-AtLogin
+IsAtLogin
 =======
 
 Description:
@@ -46,7 +55,7 @@ Example:
       exit;
 
 *)
-function AtLogin() : boolean
+function IsAtLogin() : boolean
 begin
   writeln('AtLogin(): Detecting login screen...');
   result := false;
@@ -69,16 +78,36 @@ begin
 
 end;
 
-procedure EnterDetails(username, pass : string)
+(*
+EnterDetails
+============
+
+Description:
+  Enters the username and password into the text fields and
+  logs the account in
+
+Parameters:
+  username - The coount username
+  password - The account password
+
+Notes:
+  See improvements below.
+
+Improvements:
+  Can be improved by first checking if there is text already in the
+  field.
+
+Example:
+    EnterDetails(username, password);
+
+*)
+procedure EnterDetails(username, password : string)
 var i : integer = 0;
 
 begin
   Mouse(TB_USER.GetRandomPoint.X, TB_USER.GetRandomPoint.Y, MOUSE_LEFT, 10);
-  SendText(username);
-
-  KeyDown(VK_TAB);
-  Wait(10 + Random(50));
-  KeyUp(VK_TAB);
+  TypeText(username, true);
+  TypeText(password, true);
 
 end;
 

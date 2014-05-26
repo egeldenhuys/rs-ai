@@ -1,15 +1,23 @@
-program TestLogin;
+(*
+lobby_test
+==========
+
+Description:
+  This program tests the functions of the lobby.
+*)
+
+program lobby_test;
 {$i ../interfaces/lobby.simba}
 
 begin
   ActivateClient();
 
-if AtLogin() = false then
+if IsAtLogin() = false then
   begin
     writeln('Not at the login screen, Exiting.');
     exit();
   end;
 
-  EnterDetails('Username','');
+  EnterDetails('username','password');
 
 end.
