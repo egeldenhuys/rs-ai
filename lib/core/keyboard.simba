@@ -1,40 +1,161 @@
 (*
 keyboard
-====
+========
 
 Description:
-  Provides functions for entering text into the game.
+  Provides functions for typing text.
 
 *)
+
+// Special keys
+const
+  KEY_SHIFT = 16;
+  KEY_ENTER = 13;
+  KEY_TAB = 9;
 
 (*
-name
-====
+PressKey
+========
 
 Description:
+  Types the given text with time variations.
 
 Paramaters:
+  key - The keycode of the key to press
 
 Notes:
+  This function is different to the default PressKey() function
+  as it is more human. The difference is show below.
+
+  Default PressKey() function:
+  keyup    keyCode=50  (2)
+  keydown  keyCode=50  (2)
+  keypress keyCode=50  (2)
+
+  override PressKey() function, which is the same as a human:
+  keydown  keyCode=80  (P)
+  keypress keyCode=112 (p)
+  keyup    keyCode=80  (P)
+  keydown time: 84.000ms
+
 
 Example:
+  PressKey(65);
+  Presskey(GetKeyCode('a'));
 
 *)
-procedure TypeText(text : string);
-var
-  i : integer;
-
+procedure PressKey(key : word); override;
 begin
-  for i := 1 to Length(text) do
-  begin
-    KeyDown(GetKeyCode(text[i]));
-    wait(RandomRange(50, 90));
-    KeyUp(GetKeyCode(text[i]));
-    wait(RandomRange(50, 400));
-  end;
+  KeyDown(key);
+  wait(RandomRange(30, 80));
 
+  KeyUp(key);
 
 end;
+
+(*
+ToggleKey
+=========
+
+Description:
+  Toggles the key state
+
+Paramaters:
+  key       - The key value to toggle
+
+Notes:
+  If the key is currently pressed down by the script
+  it will be pulled up and vice versa.
+
+Example:
+  ToggleKey(SHIFT_KEY);
+
+*)
+procedure ToggleKey(key : word);
+begin
+
+  if isKeyDown(key) then
+    KeyUp(key)
+  else
+    KeyDown(key);
+
+end;
+
+
+(*
+TypeText
+========
+
+Description:
+  Types the given text with time variations.
+
+Paramaters:
+  text       - The text to type.
+  pressEnter - Press enter after typing the text?
+
+Notes:
+  This will also press the shift key for keys such as %, &, @ etc.
+
+Example:
+  TypeText('I need money pl0x!??!!@#', True);
+
+*)
+procedure TypeText(text : string; pressEnter : boolean);
+const
+  shiftKeys : array[0..20] of string = ['<', '>', '?', ':', '"', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '{', '}', '|'];
+
+var
+  i, j : integer;
+  toggle : boolean;
+
+begin
+
+  // Loop through all the characters in the given string
+  for i := 1 to Length(text) do
+  begin
+
+    toggle := false;
+
+    // Check if the text requires the shift key modifier
+    for j := 0 to Length(shiftKeys) do
+    begin
+
+      // Comapre characters
+      if text[i] = shiftKeys[j] then
+        begin
+          toggle := true;
+          Break;
+        end;
+
+    end; // End toggle check
+
+    if toggle = true then
+      begin
+        ToggleKey(KEY_SHIFT);
+
+        PressKey(GetKeyCode(text[i]));
+
+        ToggleKey(KEY_SHIFT);
+
+        wait(RandomRange(50, 200));
+      end
+    else
+      begin
+
+        PressKey(GetKeyCode(text[i]));
+        wait(RandomRange(50, 200));
+
+    end; // End key press
+
+  end; // End text loop
+
+  if pressEnter = True then
+    PressKey(KEY_ENTER);
+
+end;
+
+
+
 
 
 
