@@ -1,18 +1,23 @@
-program mouse_test;
-{$i ../core/mouse.simba}
-
 (*
 mouse_test
-~~~~~~~~~~
+==========
 
 Description:
-  This file is used to test the mouse functions
+  This file is used to test the mouse functions.
+
+Notes:
+  It was designed to be used along with the draw_mouse_path tool as the client.
 
 *)
 
+program mouse_test;
+{$i ../core/mouse.simba}
+
+
+
 (*
 GetMousePoints
-~~~~~~~~~~~~~~
+==============
 
 Description:
   Random points used for testing the accuracy and movement of
@@ -101,7 +106,7 @@ end;
 
 (*
 TestMouse
-~~~~~~~~~
+=========
 
 Description:
   This method is used to test the movement and accuracy
