@@ -5,6 +5,9 @@ lobby
 Description:
   Provides functions related to the login and lobby.
 
+ToDo:
+  - Detect incorrect login screen.
+
 *)
 
 {$include_once ../core/mouse.simba}
