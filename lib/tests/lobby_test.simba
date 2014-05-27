@@ -11,26 +11,59 @@ program lobby_test;
 
 procedure SetClient()
 begin
-  SetDesktopAsClient();
   MouseSetClientArea(8, 93, 807, 692);
   ImageSetClientArea(8, 93, 807, 692);
+
+end;
+
+procedure DeskMouse(x, y : integer);
+begin
+
+  SetDesktopAsClient();
+  Mouse(x, y, MOUSE_LEFT, 5);
+  SetClient();
 
 end;
 
 begin
  SetClient();
 
- if IsAtLogin() then
-  EnterDetails('Poopy', 'Toilet')
- else
-  exit;
+ DeskMouse(864, 40);
+ //wait(500);
+ writeln('--------------');
+ writeln('Player Info...');
+ IsAtLobby();
 
- SetDesktopAsClient();
- Mouse(1160, 38, MOUSE_LEFT, 5);
- SetClient();
+ DeskMouse(983, 36);
+ //wait(500);
+ writeln('--------------');
+ writeln('World Select');
+ IsAtLobby();
 
- wait(1000);
+ DeskMouse(1126, 40);
+ //wait(500);
+ writeln('--------------');
+ writeln('Friends');
+ IsAtLobby();
 
- writeln(IsAtLobby());
+ DeskMouse(1251, 39);
+ //wait(500);
+ writeln('--------------');
+ writeln('Friends Chat');
+ IsAtLobby();
+
+ DeskMouse(1382, 42);
+ //wait(500);
+ writeln('--------------');
+ writeln('Clan Chat');
+ IsAtLobby();
+
+ DeskMouse(1497, 40);
+ //wait(500);
+ writeln('--------------');
+ writeln('Options');
+ IsAtLobby();
+
+
 
 end.
