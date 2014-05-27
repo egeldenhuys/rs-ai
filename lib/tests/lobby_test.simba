@@ -9,15 +9,28 @@ Description:
 program lobby_test;
 {$i ../interfaces/lobby.simba}
 
+procedure SetClient()
 begin
-  ActivateClient();
+  SetDesktopAsClient();
+  MouseSetClientArea(8, 93, 807, 692);
+  ImageSetClientArea(8, 93, 807, 692);
 
-if IsAtLogin() = false then
-  begin
-    writeln('Not at the login screen, Exiting.');
-    exit();
-  end;
+end;
 
-  EnterDetails('username','password');
+begin
+ SetClient();
+
+ if IsAtLogin() then
+  EnterDetails('Poopy', 'Toilet')
+ else
+  exit;
+
+ SetDesktopAsClient();
+ Mouse(1160, 38, MOUSE_LEFT, 5);
+ SetClient();
+
+ wait(1000);
+
+ writeln(IsAtLobby());
 
 end.

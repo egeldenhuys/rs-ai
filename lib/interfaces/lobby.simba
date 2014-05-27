@@ -12,29 +12,15 @@ ToDo:
 
 {$include_once ../core/mouse.simba}
 {$include_once ../core/keyboard.simba}
+{$include_once ../core/types.simba}
 
-// Static colours and coordinates used to identify the login screen
-const
-TP_A : TPoint = [347, 387];
-CL_A : integer = 4507643;
-
-TP_B : TPoint = [666, 99];
-CL_B : Integer = 5302014;
-
-TP_C : TPoint = [276, 244];
-CL_C : Integer = 16777215;
-
-
-// Static coordiantes for the text fields
-const
-TB_USER : TBox = [272, 255, 520, 277];
-TB_PASS : TBox = [174, 330, 522, 347];
 
 function TBox.GetRandomPoint: TPoint;
 begin
   result.x := randomRange(self.x1, self.x2);
   result.y := randomRange(self.y1, self.y2);
 end;
+
 
 (*
 IsAtLogin
@@ -59,24 +45,28 @@ Example:
 
 *)
 function IsAtLogin() : boolean
+// Static colours and coordinates used to identify the login screen
+const
+  POINT_A : TPointInfo = [347, 387, 4507643];
+  POINT_B : TPointInfo = [666, 99, 5302014];
+  POINT_C : TPointInfo = [276, 244, 16777215];
+
 begin
   writeln('AtLogin(): Detecting login screen...');
   result := false;
 
   // Check for each colour
-  if GetColor(TP_A.X, TP_A.Y) = CL_A then
-    if GetColor(TP_B.X, TP_B.Y) = CL_B then
-      if GetColor(TP_C.X, TP_C.Y) = CL_C then
+  if GetColor(POINT_A.x, POINT_A.y) = POINT_A.colour then
+    if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
+      if GetColor(POINT_C.x, POINT_C.y) = POINT_C.colour then
       begin
         result := true;
-        writeln('- Colors found.');
-        writeln('AtLogin(): True')
+        writeln('AtLogin(): True');
       end
 
   if result = false then
   begin
-    writeln('- Colours not found');
-    writeln('AtLogin(): False')
+    writeln('AtLogin(): False');
   end;
 
 end;
@@ -105,12 +95,61 @@ Example:
 
 *)
 procedure EnterDetails(username, password : string)
-var i : integer = 0;
+// Static coordiantes for the text fields
+const
+  TB_USER : TBox = [272, 255, 520, 277];
+  TB_PASS : TBox = [174, 330, 522, 347];
+
+var
+  i : integer = 0;
 
 begin
+  writeln('EnterDetails(): Entering account details...');
+
   Mouse(TB_USER.GetRandomPoint.X, TB_USER.GetRandomPoint.Y, MOUSE_LEFT, 10);
+
   TypeText(username, true);
   TypeText(password, true);
 
 end;
+
+(*
+IsAtLobby
+=========
+
+Description:
+  Detects if the lobby screen is open (The screen after logging in).
+
+Returns:
+  True - If the lobby was found
+  False - If not found
+
+Improvements that can be made:
+  At the moment the world and options icons are used
+  for the colour. Can be improved by looking at points unique to the
+  lobby, but the same for each lobby tab.
+
+*)
+
+function IsAtLobby() : boolean;
+const
+  POINT_A : TPointInfo = [197, 78, 8962461];
+  POINT_B : TPointInfo = [604, 80, 7039328];
+
+begin
+  writeln('IsAtLobby(): Detecting the lobby...');
+  result := false;
+
+  if GetColor(POINT_A.x, POINT_A.y) = POINT_A.colour then
+    if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
+      begin
+      writeln('IsAtLobby(): True');
+      result := true;
+      end;
+  if result = false then
+    writeln('IsAtLobby(): False');
+
+
+end;
+
 
