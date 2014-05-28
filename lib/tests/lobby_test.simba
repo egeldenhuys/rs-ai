@@ -9,61 +9,11 @@ Description:
 program lobby_test;
 {$i ../interfaces/lobby.simba}
 
-procedure SetClient()
 begin
-  MouseSetClientArea(8, 93, 807, 692);
-  ImageSetClientArea(8, 93, 807, 692);
+  ActivateClient();
 
-end;
-
-procedure DeskMouse(x, y : integer);
-begin
-
-  SetDesktopAsClient();
-  Mouse(x, y, MOUSE_LEFT, 5);
-  SetClient();
-
-end;
-
-begin
- SetClient();
-
- DeskMouse(864, 40);
- //wait(500);
- writeln('--------------');
- writeln('Player Info...');
- IsAtLobby();
-
- DeskMouse(983, 36);
- //wait(500);
- writeln('--------------');
- writeln('World Select');
- IsAtLobby();
-
- DeskMouse(1126, 40);
- //wait(500);
- writeln('--------------');
- writeln('Friends');
- IsAtLobby();
-
- DeskMouse(1251, 39);
- //wait(500);
- writeln('--------------');
- writeln('Friends Chat');
- IsAtLobby();
-
- DeskMouse(1382, 42);
- //wait(500);
- writeln('--------------');
- writeln('Clan Chat');
- IsAtLobby();
-
- DeskMouse(1497, 40);
- //wait(500);
- writeln('--------------');
- writeln('Options');
- IsAtLobby();
-
-
+  Lobby.Login('a1@123.com','123123');
+  Lobby.SelectTab(LOBBY_TAB_FRIENDS);
+  Lobby.Play();
 
 end.
