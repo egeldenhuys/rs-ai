@@ -1,0 +1,14 @@
+program TCat_test;
+{$i TCat.simba}
+
+var
+  myCat : TCat;
+
+begin
+  myCat.name := 'Billy';
+  myCat.age := 592;
+
+  myCat.Meow();
+  myCat.DoStuff();
+
+end.
