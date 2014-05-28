@@ -1,0 +1,19 @@
+(*
+lobby_test
+==========
+
+Description:
+  This program tests the functions of the lobby.
+*)
+
+program lobby_test;
+{$i ../interfaces/lobby.simba}
+
+begin
+  ActivateClient();
+
+  Lobby.Login('a1@123.com','123123');
+  Lobby.SelectTab(LOBBY_TAB_FRIENDS);
+  Lobby.Play();
+
+end.

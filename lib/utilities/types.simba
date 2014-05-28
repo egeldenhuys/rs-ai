@@ -1,0 +1,23 @@
+(*
+types
+=====
+
+Description:
+  This file will be used to store types used by the library.
+*)
+
+Type
+
+(*
+TPointInfo
+==========
+
+Description:
+  Used to store both the coordinates and a colour
+*)
+
+  TPointInfo =  Record
+                  x : integer;
+                  y : integer;
+                  colour : integer;
+                End;

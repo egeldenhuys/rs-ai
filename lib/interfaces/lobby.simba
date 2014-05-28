@@ -1,0 +1,263 @@
+(*
+lobby
+=====
+
+Description:
+  Provides functions related to the login and lobby.
+
+*)
+
+{$include_once ../core/mouse.simba}
+{$include_once ../core/keyboard.simba}
+{$include_once ../utilities/types.simba}
+{$i interfaces.simba}
+
+type
+  Lobby = TRSInterface;
+
+
+function TBox.GetRandomPoint: TPoint;
+begin
+  result.x := randomRange(self.x1, self.x2);
+  result.y := randomRange(self.y1, self.y2);
+end;
+
+
+(*
+Lobby.IsAtLogin
+===============
+
+Description:
+    Checks if the login screen is open
+
+Parameters:
+    None.
+
+Return
+    True  - if the login screen is open
+    False - if the login screen is not open
+
+Notes:
+    ...
+
+Example:
+    if NOT AtLogin() then
+      exit;
+
+*)
+function Lobby.IsAtLogin() : boolean
+// Static colours and coordinates used to identify the login screen
+const
+  POINT_A : TPointInfo = [347, 387, 4507643];
+  POINT_B : TPointInfo = [666, 99, 5302014];
+  POINT_C : TPointInfo = [276, 244, 16777215];
+
+begin
+  writeln('AtLogin(): Detecting login screen...');
+  result := false;
+
+  // Check for each colour
+  if GetColor(POINT_A.x, POINT_A.y) = POINT_A.colour then
+    if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
+      if GetColor(POINT_C.x, POINT_C.y) = POINT_C.colour then
+      begin
+        result := true;
+        writeln('AtLogin(): True.');
+      end
+
+  if result = false then
+  begin
+    writeln('AtLogin(): False.');
+  end;
+
+end;
+
+(*
+Lobby.Login
+===========
+
+Description:
+  Enters the username and password into the text fields and
+  logs the account in
+
+Parameters:
+  username - The coount username
+  password - The account password
+
+Notes:
+  See improvements below.
+
+Improvements:
+  Can be improved by first checking if there is text already in the
+  field.
+
+Example:
+    Login(username, password);
+
+*)
+procedure Lobby.Login(username, password : string)
+// Static coordiantes for the text fields
+const
+  TB_USER : TBox = [272, 255, 520, 277];
+  TB_PASS : TBox = [174, 330, 522, 347];
+
+var
+  i : integer = 0;
+  timeStart, timeDiff : integer;
+  loggedIn : boolean;
+
+begin
+  if self.IsAtLogin() = false then
+  begin
+    writeln('TLobby.Login(): Not at the login screen. Exiting');
+    exit;
+  end;
+
+  writeln('EnterDetails(): Entering account details...');
+
+  Mouse(TB_USER.GetRandomPoint.X, TB_USER.GetRandomPoint.Y, MOUSE_LEFT, 10);
+
+  TypeText(username, true);
+  TypeText(password, true);
+
+  writeln('AtLogin(): Account details sent, waiting for Lobby to open...');
+  timeStart := GetSystemTime();
+  timeDiff := 0;
+  loggedIn := false;
+
+  while timeDiff < 10000 do
+  begin
+    wait(RandomRange(2000, 4000));
+
+    if self.IsAtLobby() then
+    begin
+      writeln('AtLogin(): Succesfully logged in.');
+      loggedIn := true;
+      break;
+    end;
+
+    timeDiff := GetSystemTime() - timeStart;
+  end;
+
+  if loggedIn = false then
+    writeln('AtLogin(): Failed to log in.');
+
+
+end;
+
+(*
+Lobby.IsAtLobby
+===============
+
+Description:
+  Detects if the lobby screen is open (The screen after logging in).
+
+Returns:
+  True - If the lobby was found
+  False - If not found
+
+Improvements that can be made:
+  At the moment the world and options icons are used
+  for the colour. Can be improved by looking at points unique to the
+  lobby, but the same for each lobby tab.
+
+*)
+
+function Lobby.IsAtLobby() : boolean;
+const
+  POINT_A : TPointInfo = [197, 78, 8962461];
+  POINT_B : TPointInfo = [604, 80, 7039328];
+
+begin
+  writeln('IsAtLobby(): Detecting the lobby...');
+  result := false;
+
+  if GetColor(POINT_A.x, POINT_A.y) = POINT_A.colour then
+    if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
+      begin
+      writeln('IsAtLobby(): True');
+      result := true;
+      end;
+  if result = false then
+    writeln('IsAtLobby(): False');
+
+
+end;
+
+// Lobby tab IDs
+const
+LOBBY_TAB_PLAYER_INFO = 0;
+LOBBY_TAB_WORLD_SELECT = 1;
+LOBBY_TAB_FRIENDS = 2;
+LOBBY_TAB_FRIENDS_CHAT = 3;
+LOBBY_TAB_CLAN_CHAT = 4;
+LOBBY_TAB_OPTIONS = 5;
+
+(*
+Lobby.SelectTab
+===============
+
+Description:
+  Click on the specified tab in the lobby.
+
+Paramaters:
+  tabID : the ID of the tab to click
+
+Notes:
+  Will only run if already in the lobby.
+
+Example:
+  Lobby.SelectTab(LOBBY_TAB_PLAYER_INFO);
+
+*)
+procedure Lobby.SelectTab(tabID : integer);
+var
+  btnArray : array[0..5] of TRSButton;
+
+const
+  // Set the button coordinates
+  btnPlayerInfo  : TRSButton = [82, 73, 176, 93];
+  btnWorldSelect : TRSButton = [183, 70, 281, 94];
+  btnFriends     : TRSButton = [284, 69, 381, 94];
+  btnFriendsChat : TRSButton = [387, 71, 482, 94];
+  btnClanChat    : TRSButton = [489, 71, 585, 94];
+  btnOptions     : TRSButton = [592, 71, 686, 94];
+
+begin
+  // Assign the buttons to an array. This makes it easier
+  // to call their function based on the given ID.
+  // No need for a switch statement
+  btnArray[0] := btnPlayerInfo;
+  btnArray[1] := btnWorldSelect;
+  btnArray[2] := btnFriends;
+  btnArray[3] := btnFriendsChat;
+  btnArray[4] := btnClanChat;
+  btnArray[5] := btnOptions;
+
+  if self.IsAtLobby() = false then
+    writeln('Lobby.SelectTab(): Not at the lobby');
+
+  btnArray[tabID].Click();
+  wait(RandomRange(500, 1200));
+
+end;
+
+procedure Lobby.Play();
+var
+  btnPlay : TRSButton = [ 275, 498, 520, 519];
+
+begin
+
+  if self.IsAtLobby() = false then
+  begin
+    writeln('Lobby.Play(): Not at lobby. Exiting.');
+    exit;
+  end;
+
+  self.SelectTab(LOBBY_TAB_PLAYER_INFO);
+  btnPlay.Click();
+
+
+end;
+
+

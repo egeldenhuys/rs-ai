@@ -1,0 +1,80 @@
+(*
+interfaces
+==========
+
+Description:
+  This file holds global interface functions and constants.
+  Also contains TRSInterface.
+*)
+
+(*
+type TRSInterface
+=================
+
+Description:
+  A record for storing information about the interface
+
+Example:
+  var
+    Lobby : TRSInterface;
+
+*)
+type
+  TRSInterface = record
+    name : string;
+    static : boolean;
+    x, y, w, h : integer;
+    x1, y1, x2, y2 : integer;
+  end;
+
+(*
+type TRSButton
+==============
+
+Description:
+  Used to store the coordinates of a clickable button
+  on the RuneScape interface.
+
+Paramaters:
+  x1, y1 - Top left corner
+  x2, y2 - Bottom right corner
+
+Example:
+  var
+    btnPlayerInfo : TRSButton = [81, 71, 177, 93];
+
+*)
+
+type
+  TRSButton = record
+    x1, y1, x2, y2 : integer;
+  end;
+
+(*
+TRSButton.Click
+===============
+
+Description:
+  Clicks a random point inside the button
+
+Example:
+  myButton.Click();
+
+*)
+
+procedure TRSButton.Click();
+var
+  x, y : integer;
+
+begin
+  x := RandomRange(self.x1, self.x2);
+  y := RandomRange(self.y1, self.y2);
+
+  Mouse(x, y, MOUSE_LEFT, 5);
+
+
+end;
+
+
+
+
