@@ -1,6 +1,9 @@
-(* Aim
-  The aim of this file is to provide procedures to move the mouse.
-  The mouse movement has to be as humanly as possible.
+(*
+mouse
+=====
+
+Description:
+	Provides functions for moving and clicking the mouse.
 *)
 
 (*
