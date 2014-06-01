@@ -1,0 +1,13 @@
+(*
+ai
+==
+
+Description:
+  This file includes the resoureces required to build an AI Method
+
+*)
+
+{$include_once core/mouse.simba}
+{$include_once core/keyboard.simba}
+{$include_once utilities/types.simba}
+
