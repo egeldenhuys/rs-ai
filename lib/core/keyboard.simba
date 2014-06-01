@@ -3,7 +3,7 @@ keyboard
 ========
 
 Description:
-  Contains function for typing text.
+  Provides functions for typing text.
 
 *)
 

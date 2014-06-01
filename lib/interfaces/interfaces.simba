@@ -6,7 +6,6 @@ Description:
   This file holds global interface functions and constants.
   Also contains TRSInterface.
 *)
-{$include_once ../core/mouse.simba}
 
 (*
 type TRSInterface

@@ -6,9 +6,11 @@ Description:
   Provides functions related to the login and lobby.
 
 *)
-{$include_once interfaces.simba}
-{$include_once ../utilities/types.simba}
+
+{$include_once ../core/mouse.simba}
 {$include_once ../core/keyboard.simba}
+{$include_once ../utilities/types.simba}
+{$i interfaces.simba}
 
 type
   Lobby = TRSInterface;
