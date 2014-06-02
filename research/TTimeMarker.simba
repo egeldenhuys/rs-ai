@@ -1,0 +1,106 @@
+(*
+Type TTimeMarker
+===========
+
+Description:
+  Provides functions for timing
+
+Example:
+  timer : TTimerMarker = ['Timer name'];
+  timer.Start();
+  timer.PrintTime();
+
+  OR
+
+  timer.name := 'My second timer';
+  timer.Start
+*)
+
+Type
+  TTimeMarker = record
+  name : string;
+  _timeStart, _timeEnd, _timeDiff : integer;
+  end;
+
+(*
+TTimeMarker.Start()
+===================
+
+Description:
+  Records the start time for the timer.
+
+*)
+procedure TTimeMarker.Start();
+begin
+  self._timeStart := GetSystemTime();
+
+end;
+
+(*
+TTimeMarker.Stop()
+==================
+
+Description:
+  Records the time the timer was stopped.
+  Used by GetTime().
+
+Example:
+  timer.Start();
+  // Do stuff
+  timer.Stop();
+
+  time := timer.GetTime();
+
+*)
+procedure TTimeMarker.Stop();
+begin
+  self._timeEnd := GetSystemTime();
+
+end;
+
+(*
+TTimeMarker.GetTime()
+=====================
+
+Description:
+  Returns the time sicne the timer was stopped.
+
+Example:
+  timer.Stop();
+  writeln(timer.GetTime());
+
+*)
+
+function TTimeMarker.GetTime() : integer;
+begin
+
+  self._timeDiff := self._timeEnd - self._timeStart;
+  exit(self._timeDiff);
+
+end;
+
+(*
+TTimeMarker.PrintTime()
+=======================
+
+Description:
+  prints the time since the timer was started.
+
+Example:
+  timer.name := 'my timer';
+
+  timer.Start();
+  timer.PrintTime();
+
+Output:
+  my timer: 56 ms
+
+*)
+
+procedure TTimeMarker.PrintTime();
+begin
+
+  self.Stop();
+  writeln(self.name + ': ' + toStr(self.GetTime()) + ' ms');
+
+end;
