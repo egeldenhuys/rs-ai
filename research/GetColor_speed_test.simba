@@ -1,0 +1,125 @@
+(*
+GetColor_speed_test
+===================
+
+Description:
+  Tests the speed of the following functions:
+    - GetColor()
+    - FastGetPixel()
+    - FindColor()
+
+Results:
+
+  GetColour() 10x10: 3339 ms
+
+  FastGetPixel() 1920x1080: 265 ms
+  FastGetPixel() 10x10: 78 ms
+
+  FindColor() 1920x1080: 63 ms
+  FindColor() 10x10: 47 ms
+
+  Fastest for finding a color: FindColor()
+  Fastest for getting a color: FastGetPixel()
+
+*)
+
+program GetColor_speed_test;
+{$i TTimeMarker.simba}
+
+procedure GetColor_test(x1, y1, x2, y2 : integer);
+var
+  x, y : integer;
+
+begin
+
+  for x := x1 to x2 do
+  begin
+    for y := y1 to y2 do
+    begin
+      GetColor(x, y)
+    end;
+  end;
+
+end;
+
+procedure FastGetPixel_test(x1, y1, x2, y2 : integer);
+var
+  x, y : integer;
+  hBmp : integer;
+
+begin
+  hBmp := BitmapFromClient(0, 0, x2, y2);
+
+  for x := x1 to x2 do
+  begin
+    for y := y1 to y2 do
+    begin
+      FastGetPixel(hBmp, x, y)
+    end;
+  end;
+
+  FreeBitmap(hBmp);
+
+end;
+
+procedure FindColor_test(x1, y1, x2, y2 : integer);
+const
+  CL_TARGET = 12954572;
+
+var
+  x, y : integer;
+
+begin
+  FindColor(x, y, CL_TARGET, x1, y1, x2, y1);
+
+end;
+
+var
+  timer : TTimeMarker;
+  w, h : integer;
+
+begin
+
+  getClientDimensions(w, h);
+  writeln('------ START ------');
+
+  // GetColor
+  timer.name := 'GetColour() 10x10';
+  timer.Start();
+
+  GetColor_test(0, 0, 9, 9);
+  timer.PrintTime();
+
+  // FastGetPixel
+  timer.name := 'FastGetPixel() ' + toStr(w) + 'x' + toStr(h);
+  timer.Start();
+
+  FastGetPixel_test(0, 0, w - 1, h - 1);
+  timer.PrintTime();
+
+  // FastGetPixel 10x10
+  timer.name := 'FastGetPixel() 10x10';
+  timer.Start();
+
+  FastGetPixel_test(0, 0, 9, 9);
+  timer.PrintTime();
+
+  // FindColor
+  timer.name := 'FindColor() ' + toStr(w) + 'x' + toStr(h);
+  timer.Start();
+
+  FindColor_test(0, 0, w - 1, h - 1);
+  timer.PrintTime();
+
+  // FindColor 10x10
+  timer.name := 'FindColor() 10x10';
+  timer.Start();
+
+  FindColor_test(0, 0, 9, 9);
+  timer.PrintTime();
+
+
+  writeln('------- END -------');
+
+
+end.
