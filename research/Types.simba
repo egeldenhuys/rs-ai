@@ -1,0 +1,55 @@
+(*
+Types
+=====
+
+Description:
+  The aim of this program is to explore using types.
+
+*)
+
+program Types;
+
+type
+  TCat = Record
+    name : string;
+  end;
+
+type
+  TCatArray = Record
+    catArray : array of TCat;
+    _count : integer;
+  End;
+
+
+procedure TCatArray.AddCat(cat : TCat);
+begin
+  writeln('length: ' + toStr(Length(CatArray)));
+  SetLength(self.CatArray, Length(CatArray) + 1);
+  writeln('new length: ' + toStr(Length(CatArray)));
+
+  self.catArray[Length(catArray) - 1] := cat;
+
+
+
+end;
+
+var
+  myCat : TCat;
+  cats : TCatArray;
+
+begin
+
+myCat.name := 'jane';
+
+cats.AddCat(myCat);
+
+myCat.name := 'bob';
+cats.AddCat(myCat);
+
+cats.AddCat(['john']);
+
+writeln(cats.catArray[0].name);
+writeln(cats.catArray[1].name);
+writeln(cats.catArray[2].name);
+
+end.
