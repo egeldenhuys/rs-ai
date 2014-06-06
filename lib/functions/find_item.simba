@@ -8,3 +8,28 @@ Description:
 
 *)
 
+{$include_once ../utilities/types.simba}
+
+Type
+  TRSItem = Record
+    name : string;
+    mainColour : integer;
+    subPoints : array of TPointInfo;
+    x, y : integer;
+  end;
+
+procedure TRSItem.Find(x1, y1, x2, y2 : integer);
+var
+  i : integer;
+
+begin
+
+  FindColors(
+
+end;
+
+
+
+
+
+

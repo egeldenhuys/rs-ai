@@ -1,3 +1,24 @@
 program find_item_test;
+{$i functions/find_item.simba}
+
+var
+  myItem : TRSItem;
+  cats : array[0..1] of TPointInfo;
+
 begin
+cats[0] := [-10, 2, 16777191];
+cats[1] := [5, 2, 4303196];
+
+myItem.name := 'Log';
+myItem.mainColour := 5883766;
+myItem.subPoints := cats;
+
+myItem.Find();
+
+
+
+
+
+
+
 end.
