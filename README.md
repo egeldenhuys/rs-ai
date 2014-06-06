@@ -1,6 +1,23 @@
 Runescape Artificial Intelligence
 =====
-The final solution is planned to have the following features.
+This document explores all the features that need to be developed for this project.
+
+# Description
+The aim of this project is to create Artificial Intelligence to interact with [RuneScape](http://www.runescape.com/community).
+The AI will be run using [Simba](http://wizzup.org/simba/).
+
+# Contents
+- [AI Commander](#ai-commander)
+- [Statistics](#statistics)
+- [AI Modes](#ai-modes)
+ * [Idle Mode](#idle-mode)
+ * [Fill Vials](#fill-vials)
+ * [Soften Clay](#soften-clay)
+ * [Drop Party](#drop-party)
+- [Library](#library)
+ * [Core](#core)
+ * [Functions](#functions)
+ * [Interfaces](#interfaces)
 
 ## AI Command Center
 
