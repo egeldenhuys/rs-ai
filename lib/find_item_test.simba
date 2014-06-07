@@ -3,22 +3,17 @@ program find_item_test;
 
 var
   myItem : TRSItem;
-  cats : array[0..1] of TPointInfo;
 
 begin
-cats[0] := [-10, 2, 16777191];
-cats[1] := [5, 2, 4303196];
 
-myItem.name := 'Log';
-myItem.mainColour := 5883766;
-myItem.subPoints := cats;
+ClearDebug();
 
-myItem.Find();
+myItem.mainColour := 1986295;
+myItem.AddPoint(7, 1, 47743);
+myItem.AddPoint(-1, 10, 15705088);
+myItem.AddPoint(4, 4, 47615);
+myItem.AddPoint(2, 10, 15705088);
 
-
-
-
-
-
+myItem.Find(0, 0, 1365, 767);
 
 end.
