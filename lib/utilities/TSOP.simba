@@ -1,0 +1,73 @@
+(*
+Type SOP (Set of Points)
+========================
+
+Description:
+  Provides functions for finding images.
+
+*)
+
+{$include_once ../utilities/types.simba}
+
+Type
+  TSOP = Record
+    name : string;
+    mainColour : integer;
+    subPoints : array of TPointInfo;
+  end;
+
+procedure TSOP.AddPoint(x, y, colour : integer);
+begin
+  // Add a new element to the array
+  // Length(self.subPoints) is used as it returns the length of the array
+  // (1 based).
+
+
+  SetLength(self.subPoints, Length(self.subPoints) + 1);
+
+  self.subPoints[Length(self.subPoints) - 1].x := x;
+  self.subPoints[Length(self.subPoints) - 1].y := y;
+  self.subPoints[Length(self.subPoints) - 1].colour := colour;
+
+  end;
+
+procedure TSOP.Find(x1, y1, x2, y2 : integer);
+var
+  i, j, count : integer;
+  TPA : TPointArray;
+
+begin
+
+  // Find all main colours
+  FindColors(TPA, self.mainColour, x1, y1, x2, y2);
+
+  // Loop through all main points (i)
+  for i := 0 to Length(TPA) - 1 do
+  begin
+    count := 0;
+
+    // Loop through all sub points (j)
+    for j := 0 to Length(self.subPoints) - 1 do
+    begin
+
+      if GetColor(TPA[i].x + self.subPoints[j].x, TPA[i].y + self.subPoints[j].y) = self.subPoints[j].colour then
+      begin
+        count := count + 1;
+      end;
+
+    end;
+
+    if count = Length(self.subPoints) then
+    begin
+      writeln('Item has been found: (' + toStr(TPA[i].x) + ', ' + toStr(TPA[i].y) + ')');
+    end;
+
+  end;
+
+end;
+
+
+
+
+
+
