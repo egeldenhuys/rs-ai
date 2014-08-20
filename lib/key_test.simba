@@ -1,0 +1,96 @@
+program key_test;
+{$DEFINE DX}
+{$DEFINE SMART}
+
+{$i ai.simba}
+
+procedure TextBlock_1();
+var
+ i : integer;
+
+begin
+
+  writeln('Typing Text');
+
+  KeyUp(KEY_SHIFT);
+
+  // a - z
+  for i := 65 to 90 do
+  begin
+    pressKey(i);
+  end;
+
+  // A - Z
+  ToggleKey(KEY_SHIFT);
+
+  for i := 65 to 90 do
+  begin
+    pressKey(i);
+  end;
+
+  ToggleKey(KEY_SHIFT);
+
+  // 0 - 9
+  for i := 48 to 57 do
+  begin
+    pressKey(i);
+  end;
+
+  // ! to )
+  ToggleKey(KEY_SHIFT);
+
+  for i := 48 to 57 do
+  begin
+    pressKey(i);
+  end;
+
+  ToggleKey(KEY_SHIFT);
+
+end;
+
+procedure Erase(count : integer);
+var
+  i : integer;
+
+begin
+  for i := 0 to count - 1 do
+  begin
+    PressKey(KEY_BACKSPACE);
+    wait(RandomRange(30, 125));
+
+  end;
+
+end;
+
+procedure TextBlock_2();
+begin
+  TypeText('abcdefghijklmnopqrstuvwxyz', false);
+  wait(3000);
+  Erase(26);
+
+  TypeText('ABCDEFGHIJKLMNOPQRSTUVWXYZ', false);
+  wait(3000);
+  Erase(26);
+
+  TypeText('1234567890', false);
+  wait(3000);
+  Erase(10);
+
+  TypeText('!@#$%^&*()', false);
+  wait(3000);
+  Erase(10);
+
+  TypeText('`-=[]\;' +#222 + ',./', false);
+  wait(3000);
+  Erase(13);
+
+  TypeText('~_+{}|:"<>?', false);
+  wait(3000);
+  Erase(13);
+
+end;
+
+begin
+  SetupRS();
+  TextBlock_2();
+end.
