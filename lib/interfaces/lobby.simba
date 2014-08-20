@@ -6,20 +6,13 @@ Description:
   Provides functions related to the login and lobby.
 
 *)
+
 {$include_once interfaces.simba}
 {$include_once ../utilities/types.simba}
 {$include_once ../core/keyboard.simba}
 
 type
   Lobby = TRSInterface;
-
-
-function TBox.GetRandomPoint: TPoint;
-begin
-  result.X := randomRange(self.x1, self.x2);
-  result.Y := randomRange(self.y1, self.y2);
-end;
-
 
 (*
 Lobby.IsAtLogin
@@ -51,7 +44,6 @@ const
   POINT_C : TPointInfo = [276, 244, 16777215];
 
 begin
-  writeln('AtLogin(): Detecting login screen...');
   result := false;
 
   // Check for each colour
@@ -63,11 +55,19 @@ begin
         writeln('AtLogin(): True.');
       end
 
-  if result = false then
-  begin
-    writeln('AtLogin(): False.');
-  end;
+end;
 
+(*
+TBox.GetRandomPoint
+===================
+
+Import from SRL-6
+
+*)
+function TBox.GetRandomPoint: TPoint;
+begin
+  result.X := randomRange(self.x1, self.x2);
+  result.Y := randomRange(self.y1, self.y2);
 end;
 
 (*
@@ -105,6 +105,13 @@ var
   loggedIn : boolean;
 
 begin
+
+  if self.IsAtLobby() = true then
+  begin
+    writeln('TLobby.Login(): Already at the lobby');
+    exit;
+  end;
+
   if self.IsAtLogin() = false then
   begin
     writeln('TLobby.Login(): Not at the login screen. Exiting');
@@ -125,7 +132,7 @@ begin
 
   while timeDiff < 10000 do
   begin
-    wait(RandomRange(2000, 4000));
+    wait(RandomRange(500, 2000));
 
     if self.IsAtLobby() then
     begin
@@ -133,6 +140,15 @@ begin
       loggedIn := true;
       break;
     end;
+
+    if self.IsAccountInvalid() then
+    begin
+      writeln('AtLogin(): Login Failed. Please Check account details');
+      loggedIn := false;
+      break;
+    end;
+
+    self.SkipEmailScreen();
 
     timeDiff := GetSystemTime() - timeStart;
   end;
@@ -160,25 +176,22 @@ Improvements that can be made:
   lobby, but the same for each lobby tab.
 
 *)
-
 function Lobby.IsAtLobby() : boolean;
 const
-  POINT_A : TPointInfo = [197, 78, 8962461];
-  POINT_B : TPointInfo = [604, 80, 7039328];
+  POINT_A : TPointInfo = [114, 31, 379903];
+  POINT_B : TPointInfo = [778, 35, 1451182];
+  POINT_C : TPointInfo = [511, 15, 0];
 
 begin
-  writeln('IsAtLobby(): Detecting the lobby...');
   result := false;
 
   if GetColor(POINT_A.x, POINT_A.y) = POINT_A.colour then
     if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
-      begin
-      writeln('IsAtLobby(): True');
-      result := true;
-      end;
-  if result = false then
-    writeln('IsAtLobby(): False');
-
+      if GetColor(POINT_C.x, POINT_C.y) = POINT_C.colour then
+        begin
+          writeln('IsAtLobby(): True');
+          result := true;
+        end;
 
 end;
 
@@ -214,12 +227,12 @@ var
 
 const
   // Set the button coordinates
-  btnPlayerInfo  : TRSButton = [82, 73, 176, 93];
-  btnWorldSelect : TRSButton = [183, 70, 281, 94];
-  btnFriends     : TRSButton = [284, 69, 381, 94];
-  btnFriendsChat : TRSButton = [387, 71, 482, 94];
-  btnClanChat    : TRSButton = [489, 71, 585, 94];
-  btnOptions     : TRSButton = [592, 71, 686, 94];
+  btnPlayerInfo  : TRSButton = [51, 119, 125, 130];
+  btnWorldSelect : TRSButton = [156, 119, 239, 130];
+  btnFriends     : TRSButton = [271, 119, 323, 130];
+  btnFriendsChat : TRSButton = [348, 119, 434, 130];
+  btnClanChat    : TRSButton = [459, 119, 531, 130];
+  btnOptions     : TRSButton = [557, 119, 611, 130];
 
 begin
   // Assign the buttons to an array. This makes it easier
@@ -239,10 +252,21 @@ begin
   wait(RandomRange(500, 1200));
 
 end;
+(*
+Lobby.Play
+==========
 
+Description:
+  If the lobby is open it clicks the play button
+
+Example:
+  Lobby.Login(username, password);
+  Lobby.Play();
+
+*)
 procedure Lobby.Play();
 var
-  btnPlay : TRSButton = [ 275, 498, 520, 519];
+  btnPlay : TRSButton = [288, 514, 504, 546];
 
 begin
 
@@ -255,7 +279,149 @@ begin
   self.SelectTab(LOBBY_TAB_PLAYER_INFO);
   btnPlay.Click();
 
+end;
+
+(*
+Lobby.Close
+===========
+
+Description:
+  If at the lobby it will click the close button
+
+Example:
+  Lobby.Close();
+
+*)
+procedure Lobby.Close()
+var
+  btnClose : TRSButton = [766, 27, 777, 42];
+
+begin
+  if self.IsAtLobby() = false then
+  begin
+    writeln('Lobby.Close(): Not at Lobby. Exiting function.');
+    Exit;
+  end;
+
+  btnClose.Click();
 
 end;
+
+(*
+Lobby.IsAccountInvalid
+======================
+
+Description:
+  Checks if the Invalid Passoword screen is visible.
+  If true it clicks 'retry' and clears the fields
+
+*)
+function Lobby.IsAccountInvalid() : boolean;
+var
+  btnRetry : TRSButton = [318, 412, 478, 433];
+
+const
+  POINT_A : TPointInfo = [399, 184, 7920629];
+  POINT_B : TPointInfo = [314, 210, 2365698];
+  POINT_C : TPointInfo = [465, 284, 16777215];
+
+begin
+  result := false;
+
+  if GetColor(POINT_A.x, POINT_A.y) = POINT_A.colour then
+    if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
+      if GetColor(POINT_C.x, POINT_C.y) = POINT_C.colour then
+        begin
+          writeln('InvalidAccount(): True');
+          result := true;
+        end else
+          writeln('InvalidAccount(): False');
+
+  if result = True then
+  begin
+    btnRetry.Click();
+    wait(RandomRange(400, 2000));
+
+    Lobby.ClearFields();
+
+  end;
+
+end;
+
+(*
+Lobby.SkipEmailScreen()
+=======================
+
+Description:
+  If the email validation screen is open it clicks 'skip'
+
+*)
+
+Procedure Lobby.SkipEmailScreen();
+var
+  btnRetry : TRSButton = [359, 416, 437, 437];
+
+const
+  POINT_A : TPointInfo = [271, 54, 376302];
+  POINT_B : TPointInfo = [532, 174, 200894];
+  POINT_C : TPointInfo = [191, 405, 2432008];
+
+begin
+
+  if GetColor(POINT_A.x, POINT_A.y) = POINT_A.colour then
+    if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
+      if GetColor(POINT_C.x, POINT_C.y) = POINT_C.colour then
+        begin
+          writeln('SkipEmailScreen(): Skipping...');
+          btnRetry.Click();
+        end;
+
+end;
+
+(*
+Lobby.ClearFields()
+===================
+
+Desciption:
+  This procedure clears the input fields on the login screen.
+
+  Rough and cheap implementation
+
+*)
+Procedure Lobby.ClearFields()
+var
+  btnUser : TRSButton = [496, 258, 519, 275];
+  btnPass : TRSButton = [497, 330, 520, 349];
+  i : integer;
+
+begin
+
+  writeln('ClearFields(): Clearing Input fields for login...');
+
+  for i := 0 to 1 do
+  begin
+    btnUser.Click();
+    wait(RandomRange(200, 600));
+
+    KeyDown(KEY_BACKSPACE);
+    wait(RandomRange(2000, 4000));
+    KeyUp(KEY_BACKSPACE);
+  end;
+
+  for i := 0 to 1 do
+  begin
+    btnPass.Click();
+    wait(RandomRange(200, 600));
+
+    KeyDown(KEY_BACKSPACE);
+    wait(RandomRange(2000, 4000));
+    KeyUp(KEY_BACKSPACE);
+  end;
+
+  btnUser.Click();
+
+end;
+
+
 
 
