@@ -1,0 +1,15 @@
+program template;
+{$DEFINE SMART} // Use Smart
+
+{$IFDEF SMART}
+  {$DEFINE DX} // Use the DirectX plugin for Smart
+{$ENDIF}
+
+{$i ai.simba}
+
+begin
+  SetupRS(); // Open RuneScape in smart or check if
+             // it has been selected by the crosshair.
+
+
+end.
