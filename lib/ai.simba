@@ -11,6 +11,7 @@ Description:
 {$include_once core/keyboard.simba}
 {$include_once utilities/types.simba}
 {$include_once core/debug.simba}
+{$include_once interfaces/minimap.simba}
 
 {$IFDEF SMART}
   {$include_once core/smart.simba}
