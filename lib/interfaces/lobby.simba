@@ -16,8 +16,8 @@ type
 
 function TBox.GetRandomPoint: TPoint;
 begin
-  result.x := randomRange(self.x1, self.x2);
-  result.y := randomRange(self.y1, self.y2);
+  result.X := randomRange(self.x1, self.x2);
+  result.Y := randomRange(self.y1, self.y2);
 end;
 
 
@@ -113,7 +113,7 @@ begin
 
   writeln('EnterDetails(): Entering account details...');
 
-  Mouse(TB_USER.GetRandomPoint.X, TB_USER.GetRandomPoint.Y, MOUSE_LEFT, 10);
+  Mouse(TB_USER.GetRandomPoint().X, TB_USER.GetRandomPoint().Y, MOUSE_LEFT, 10);
 
   TypeText(username, true);
   TypeText(password, true);
