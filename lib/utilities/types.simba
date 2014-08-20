@@ -15,10 +15,10 @@ Description:
 *)
 Type
   TPointInfo =  Record
-                  x : integer;
-                  y : integer;
-                  colour : integer;
-                End;
+    x : integer;
+    y : integer;
+    colour : integer;
+  End;
 
 begin
 
