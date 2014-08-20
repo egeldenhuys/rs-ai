@@ -3,11 +3,54 @@ ai
 ==
 
 Description:
-  This file includes the resoureces required to build an AI Method
+  This file includes the Resources required to build an AI Method
 
 *)
-
+{$include_once core/client.simba}
 {$include_once core/mouse.simba}
 {$include_once core/keyboard.simba}
 {$include_once utilities/types.simba}
+{$include_once core/debug.simba}
+
+{$IFDEF SMART}
+  {$include_once core/smart.simba}
+{$ENDIF}
+
+function SetupRS(skipLoginCheck : boolean): boolean;
+var
+  t := getSystemTime();
+begin
+  print('SetupAI()', TDebug.HEADER);
+  print('Setting up AI...');
+
+  {$IFDEF DX}
+    smartPlugins := ['d3d9.dll'];
+  {$ENDIF}
+
+  setSupressExceptions(true);
+
+  {$IFNDEF SMART}
+    activateClient();
+  {$ELSE}
+    initSmart(smartForceNewClient);
+
+    if (smartEnableDrawing) then
+      smartSetupDrawing();
+  {$ENDIF}
+
+  if skipLoginCheck = false then
+  begin
+    if (waitClientReady()) then
+      print('Client is ready.')
+    else begin
+      print('Client is taking too long to load, terminating...');
+      print('setupSRL(): '+toStr(result), TDebug.FOOTER);
+      terminateScript();
+    end;
+  end;
+
+  result := true;
+  print('Setup SRL in '+toStr(getSystemTime() - t)+'ms.');
+  print('setupSRL(): '+toStr(result), TDebug.FOOTER);
+end;
 
