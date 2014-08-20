@@ -91,6 +91,6 @@ begin
 end;
 
 begin
-  SetupRS();
+  SetupRS(False);
   TextBlock_2();
 end.

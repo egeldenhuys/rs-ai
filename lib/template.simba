@@ -8,7 +8,7 @@ program template;
 {$i ai.simba}
 
 begin
-  SetupRS(); // Open RuneScape in smart or check if
+  SetupRS(False); // Open RuneScape in smart or check if
              // it has been selected by the crosshair.
 
 
