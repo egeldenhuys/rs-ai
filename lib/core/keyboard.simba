@@ -292,13 +292,6 @@ begin
 
 
   if pressEnter = True then
-  begin
-    writeln('Pressing Enter');
     PressKey(KEY_ENTER);
-  end;
-
-
-
-
 
 end;
