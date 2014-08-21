@@ -8,8 +8,9 @@ program template;
 {$i ai.simba}
 
 begin
-  SetupRS(False); // Open RuneScape in smart or check if
-             // it has been selected by the crosshair.
+  // False - Skip Login Check
+  // True  - Wait for lobby to appear
+  SetupRS(False);
 
 
 end.

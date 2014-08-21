@@ -6,15 +6,13 @@ Description:
   This file includes the Resources required to build an AI Method
 
 *)
-<<<<<<< HEAD
 {$include_once interfaces/lobby.simba}
-=======
 {$include_once core/client.simba}
->>>>>>> master
 {$include_once core/mouse.simba}
 {$include_once core/keyboard.simba}
 {$include_once utilities/types.simba}
 {$include_once core/debug.simba}
+{$include_once functions/find_item.simba}
 
 {$IFDEF SMART}
   {$include_once core/smart.simba}

@@ -10,6 +10,20 @@ Description:
 
 {$include_once ../utilities/types.simba}
 
+(*
+TRSItem
+=======
+
+Example:
+  var
+    myItem : TRSItem;
+    loc : TPoint;
+
+    myItem.mainColour := 2173229;
+    myItem.AddPoint(6, 2, colour);
+
+    loc := myItem.Find();
+*)
 Type
   TRSItem = Record
     name : string;
@@ -17,12 +31,28 @@ Type
     subPoints : array of TPointInfo;
   end;
 
+(*
+TRSItem.AddPoint
+================
+
+Description:
+  Add a subpoint to be checked
+
+Paramaters:
+  x       - x location relative to the main point
+  y       - y location relative to the main point
+  colour  - The colour of the subpoint
+
+Example:
+  myItem.AddPoint(5, 7, 2173229);
+  myItem.AddPoint(-6, 2, 2173229);
+
+*)
 procedure TRSItem.AddPoint(x, y, colour : integer);
 begin
   // Add a new element to the array
   // Length(self.subPoints) is used as it returns the length of the array
   // (1 based).
-
 
   SetLength(self.subPoints, Length(self.subPoints) + 1);
 
@@ -32,7 +62,20 @@ begin
 
   end;
 
-procedure TRSItem.Find(x1, y1, x2, y2 : integer);
+(*
+TRSItem.Find
+============
+
+Description:
+  Find the main point, using the given sub points
+
+Example:
+  loc := myItem.Find();
+
+  writeln(toString(loc.x));
+
+*)
+function TRSItem.Find(x1, y1, x2, y2 : integer) : TPoint;
 var
   i, j, count : integer;
   TPA : TPointArray;
@@ -51,7 +94,7 @@ begin
     for j := 0 to Length(self.subPoints) - 1 do
     begin
 
-      if GetColor(TPA[i].x + self.subPoints[j].x, TPA[i].y + self.subPoints[j].y) = self.subPoints[j].colour then
+      if GetColor(TPA[i].x + self.subPoints[j].x, TPA[i].y - self.subPoints[j].y) = self.subPoints[j].colour then
       begin
         count := count + 1;
       end;
@@ -60,7 +103,13 @@ begin
 
     if count = Length(self.subPoints) then
     begin
-      writeln('Item has been found: (' + toStr(TPA[i].x) + ', ' + toStr(TPA[i].y) + ')');
+      //writeln('Item has been found: (' + toStr(TPA[i].x) + ', ' + toStr(TPA[i].y) + ')');
+      result := [TPA[i].x, TPA[i].y];
+      Exit
+    end else
+    begin
+      result := [-1, -1]
+
     end;
 
   end;
