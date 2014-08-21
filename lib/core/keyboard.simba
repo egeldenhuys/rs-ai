@@ -10,8 +10,10 @@ Description:
 // Special keys
 const
   KEY_SHIFT = 16;
-  KEY_ENTER = 13;
+  KEY_ENTER = 10;
   KEY_TAB = 9;
+  KEY_CAPSLOCK = 20;
+  KEY_BACKSPACE = 8;
 
 (*
 PressKey
@@ -81,6 +83,10 @@ begin
 
 end;
 
+Type
+  TKey = record
+    lower, upper : Char;
+  end;
 
 (*
 TypeText
@@ -101,12 +107,105 @@ Example:
 
 *)
 procedure TypeText(text : string; pressEnter : boolean);
+
 const
-  shiftKeys : array[0..20] of string = ['<', '>', '?', ':', '"', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '{', '}', '|'];
+  downKeysShift : array[0..20] of TKey = [
+  ['1', '!'  ],
+  ['2', '@'  ],
+  ['3', '#'  ],
+  ['4', '$'  ],
+  ['5', '%'  ],
+  ['6', '^'  ],
+  ['7', '&'  ],
+  ['8', '*'  ],
+  ['9', '('  ],
+  ['0', ')'  ],
+  [#192, '~'  ],
+  [#189, '_'  ],
+  [#187, '+'  ],
+  [#219, '{'  ],
+  [#221, '}'  ],
+  [#220, '|'  ],
+  [#186, ':'  ],
+  [#222, '"'],
+  [#188, '<'  ],
+  [#190, '>'  ],
+  [#191, '?'  ]
+  ];
+
+  downKeys : array[0..35] of TKey = [
+  ['A', 'a'],
+  ['B', 'b'],
+  ['C', 'c'],
+  ['D', 'd'],
+  ['E', 'e'],
+  ['F', 'f'],
+  ['G', 'g'],
+  ['H', 'h'],
+  ['I', 'i'],
+  ['J', 'j'],
+  ['K', 'k'],
+  ['L', 'l'],
+  ['M', 'm'],
+  ['N', 'n'],
+  ['O', 'o'],
+  ['P', 'p'],
+  ['Q', 'q'],
+  ['R', 'r'],
+  ['S', 's'],
+  ['T', 't'],
+  ['U', 'u'],
+  ['V', 'v'],
+  ['W', 'w'],
+  ['X', 'x'],
+  ['Y', 'y'],
+  ['Z', 'z'],
+  [#192, '`'  ],
+  [#189, '-'  ],
+  [#187, '='  ],
+  [#219, '['  ],
+  [#221, ']'  ],
+  [#220, '\'  ],
+  [#186, ';'  ],
+  [#188, ','  ],
+  [#190, '.'  ],
+  [#191, '/'  ]
+  ];
+
+  shiftKeys : array[0..25] of Char = [
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'H',
+  'I',
+  'J',
+  'K',
+  'L',
+  'M',
+  'N',
+  'O',
+  'P',
+  'Q',
+  'R',
+  'S',
+  'T',
+  'U',
+  'V',
+  'W',
+  'X',
+  'Y',
+  'Z'
+  ];
 
 var
   i, j : integer;
-  toggle : boolean;
+  shift : boolean;
+  keyToPress : word;
+  found : boolean;
 
 begin
 
@@ -114,48 +213,85 @@ begin
   for i := 1 to Length(text) do
   begin
 
-    toggle := false;
+    shift := false;
+    found := false;
+    keyToPress := Ord(text[i]);
 
-    // Check if the text requires the shift key modifier
-    for j := 0 to Length(shiftKeys) do
+// Check for down, Shift
+    if found = false then
     begin
+      for j := 0 to Length(downKeysShift) do
+      begin
 
-      // Comapre characters
-      if text[i] = shiftKeys[j] then
+        if text[i] = downKeysShift[j].upper then
+          begin
+            shift := true;
+            keyToPress := Ord(downKeysShift[j].lower);
+            found := true;
+            Break;
+          end;
+
+      end; // End Shift check
+    end;
+
+    // Check down keys
+    if found = false then
+    begin
+      for j := 0 to Length(downKeys) do
+      begin
+
+        if text[i] = downKeys[j].upper then
         begin
-          toggle := true;
+          keyToPress := Ord(downKeys[j].lower);
+          found := true;
           Break;
         end;
 
-    end; // End toggle check
+      end; // End down check
+    end;
 
-    if toggle = true then
+      // Check shift keys
+    if found = false then
+    begin
+      for j := 0 to Length(shiftKeys) do
       begin
-        ToggleKey(KEY_SHIFT);
 
-        PressKey(GetKeyCode(text[i]));
+        if text[i] = shiftKeys[j] then
+        begin
+          shift := true;
+          keyToPress := Ord(text[i]);
+          found := true;
+          Break;
+        end;
 
-        ToggleKey(KEY_SHIFT);
+      end; // End shift check
+
+    end; // End key checks
+
+    if shift = true then
+    begin
+        KeyDown(KEY_SHIFT);
+        wait(RandomRange(40, 100));
+
+        PressKey(keyToPress);
+        wait(RandomRange(40, 100));
+
+        KeyUp(KEY_SHIFT);
 
         wait(RandomRange(50, 200));
-      end
+    end
     else
-      begin
+    begin
 
-        PressKey(GetKeyCode(text[i]));
-        wait(RandomRange(50, 200));
+      PressKey(keyToPress);
+      wait(RandomRange(50, 200));
 
     end; // End key press
 
   end; // End text loop
 
+
   if pressEnter = True then
     PressKey(KEY_ENTER);
 
 end;
-
-
-
-
-
-
