@@ -39,7 +39,7 @@ Example:
 function Lobby.IsAtLogin() : boolean
 // Static colours and coordinates used to identify the login screen
 const
-  POINT_A : TPointInfo = [347, 387, 4507643];
+  POINT_A : TPointInfo = [128, 233, 14143159];
   POINT_B : TPointInfo = [666, 99, 5302014];
   POINT_C : TPointInfo = [276, 244, 16777215];
 
@@ -70,94 +70,6 @@ begin
   result.Y := randomRange(self.y1, self.y2);
 end;
 
-(*
-Lobby.Login
-===========
-
-Description:
-  Enters the username and password into the text fields and
-  logs the account in
-
-Parameters:
-  username - The coount username
-  password - The account password
-
-Notes:
-  See improvements below.
-
-Improvements:
-  Can be improved by first checking if there is text already in the
-  field.
-
-Example:
-    Login(username, password);
-
-*)
-procedure Lobby.Login(username, password : string)
-// Static coordiantes for the text fields
-const
-  TB_USER : TBox = [272, 255, 520, 277];
-  TB_PASS : TBox = [174, 330, 522, 347];
-
-var
-  i : integer = 0;
-  timeStart, timeDiff : integer;
-  loggedIn : boolean;
-
-begin
-
-  if self.IsAtLobby() = true then
-  begin
-    writeln('TLobby.Login(): Already at the lobby');
-    exit;
-  end;
-
-  if self.IsAtLogin() = false then
-  begin
-    writeln('TLobby.Login(): Not at the login screen. Exiting');
-    exit;
-  end;
-
-  writeln('EnterDetails(): Entering account details...');
-
-  Mouse(TB_USER.GetRandomPoint().X, TB_USER.GetRandomPoint().Y, MOUSE_LEFT, 10);
-
-  TypeText(username, true);
-  TypeText(password, true);
-
-  writeln('AtLogin(): Account details sent, waiting for Lobby to open...');
-  timeStart := GetSystemTime();
-  timeDiff := 0;
-  loggedIn := false;
-
-  while timeDiff < 10000 do
-  begin
-    wait(RandomRange(500, 2000));
-
-    if self.IsAtLobby() then
-    begin
-      writeln('AtLogin(): Succesfully logged in.');
-      loggedIn := true;
-      break;
-    end;
-
-    if self.IsAccountInvalid() then
-    begin
-      writeln('AtLogin(): Login Failed. Please Check account details');
-      loggedIn := false;
-      break;
-    end;
-
-    self.SkipEmailScreen();
-
-    timeDiff := GetSystemTime() - timeStart;
-  end;
-
-  if loggedIn = false then
-    writeln('AtLogin(): Failed to log in.');
-
-
-end;
 
 (*
 Lobby.IsAtLobby
@@ -308,6 +220,54 @@ begin
 end;
 
 (*
+Lobby.ClearFields()
+===================
+
+Desciption:
+  This procedure clears the input fields on the login screen.
+
+  Rough and cheap implementation
+
+*)
+Procedure Lobby.ClearFields()
+var
+  btnUser : TRSButton = [496, 258, 519, 275];
+  btnPass : TRSButton = [497, 330, 520, 349];
+  i : integer;
+
+begin
+
+  if self.IsAtLogin() = false then
+  begin
+    writeln('ClearFields(): Not at the login. Can not clear fields');
+    Exit;
+  end;
+
+  writeln('ClearFields(): Clearing Input fields for login...');
+
+  for i := 0 to 1 do
+  begin
+    btnUser.Click();
+    wait(RandomRange(200, 600));
+
+    KeyDown(KEY_BACKSPACE);
+    wait(RandomRange(2000, 4000));
+    KeyUp(KEY_BACKSPACE);
+  end;
+
+  for i := 0 to 1 do
+  begin
+    btnPass.Click();
+    wait(RandomRange(200, 600));
+
+    KeyDown(KEY_BACKSPACE);
+    wait(RandomRange(2000, 4000));
+    KeyUp(KEY_BACKSPACE);
+  end;
+
+end;
+
+(*
 Lobby.IsAccountInvalid
 ======================
 
@@ -316,7 +276,7 @@ Description:
   If true it clicks 'retry' and clears the fields
 
 *)
-function Lobby.IsAccountInvalid() : boolean;
+function Lobby.IsAccountInvalid(leaveFields : boolean = True) : boolean;
 var
   btnRetry : TRSButton = [318, 412, 478, 433];
 
@@ -332,17 +292,18 @@ begin
     if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
       if GetColor(POINT_C.x, POINT_C.y) = POINT_C.colour then
         begin
-          writeln('InvalidAccount(): True');
+          writeln('Lobby.IsAccountInvalid(): True');
           result := true;
         end else
-          writeln('InvalidAccount(): False');
+          writeln('Lobby.IsAccountInvalid(): False');
 
   if result = True then
   begin
     btnRetry.Click();
-    wait(RandomRange(400, 2000));
+    wait(RandomRange(1000, 3000));
 
-    Lobby.ClearFields();
+    if leaveFields = False then
+      Lobby.ClearFields();
 
   end;
 
@@ -374,51 +335,133 @@ begin
         begin
           writeln('SkipEmailScreen(): Skipping...');
           btnRetry.Click();
-        end;
+        end else
+          writeln('SkipEmailScreen(): Not Detected.');
 
 end;
 
 (*
-Lobby.ClearFields()
-===================
+Lobby.Login
+===========
 
-Desciption:
-  This procedure clears the input fields on the login screen.
+Description:
+  Enters the username and password into the text fields and
+  logs the account in
 
-  Rough and cheap implementation
+Parameters:
+  username - The coount username
+  password - The account password
+
+Notes:
+  See improvements below.
+
+Improvements:
+  Can be improved by first checking if there is text already in the
+  field.
+
+Example:
+    Login(username, password);
 
 *)
-Procedure Lobby.ClearFields()
+procedure Lobby.Login(username, password : string; retry : boolean = false)
+// Static coordiantes for the text fields
+const
+  TB_USER : TBox = [272, 255, 520, 277];
+  TB_PASS : TBox = [174, 330, 522, 347];
+
 var
-  btnUser : TRSButton = [496, 258, 519, 275];
-  btnPass : TRSButton = [497, 330, 520, 349];
-  i : integer;
+  i : integer = 0;
+  timeStart, timeDiff : integer;
+  loggedIn : boolean;
 
 begin
 
-  writeln('ClearFields(): Clearing Input fields for login...');
+  if retry = true then
+    writeln('Retry = True')
+  else
+    writeln('Retry = False');
 
-  for i := 0 to 1 do
+  if self.IsAtLobby() = true then
   begin
-    btnUser.Click();
-    wait(RandomRange(200, 600));
-
-    KeyDown(KEY_BACKSPACE);
-    wait(RandomRange(2000, 4000));
-    KeyUp(KEY_BACKSPACE);
+    writeln('Lobby.Login(): Already at the lobby');
+    exit;
   end;
 
-  for i := 0 to 1 do
+  if self.IsAtLogin() = false then
   begin
-    btnPass.Click();
-    wait(RandomRange(200, 600));
-
-    KeyDown(KEY_BACKSPACE);
-    wait(RandomRange(2000, 4000));
-    KeyUp(KEY_BACKSPACE);
+    writeln('Lobby.Login(): Not at the login screen. Exiting');
+    exit;
   end;
 
-  btnUser.Click();
+  writeln('EnterDetails(): Entering account details...');
+
+  Mouse(TB_USER.GetRandomPoint().X, TB_USER.GetRandomPoint().Y, MOUSE_LEFT, 10);
+
+  wait(RandomRange(700, 2000));
+
+  TypeText(username, true);
+  TypeText(password, true);
+
+  writeln('Lobby.Login(): Account details sent, waiting for Lobby to open...');
+  timeStart := GetSystemTime();
+  timeDiff := 0;
+  loggedIn := false;
+
+  while timeDiff < 10000 do
+  begin
+    wait(RandomRange(500, 2000));
+
+    if self.IsAtLobby() then
+    begin
+      writeln('Lobby.Login(): Succesfully logged in.');
+      loggedIn := true;
+      break;
+    end;
+
+    if self.IsAccountInvalid() then
+    begin
+      writeln('Lobby.Login(): Login Failed. Please Check account details');
+      loggedIn := false;
+      break;
+    end;
+
+    self.SkipEmailScreen();
+
+    timeDiff := GetSystemTime() - timeStart;
+  end;
+
+  // Retry the login. ONCE.
+  if loggedIn = false then
+  begin
+    writeln('Lobby.Login(): Failed to log in.');
+
+    // Prevent infinite loop.
+    if retry = false then
+    begin
+      writeln('Lobby.Login(): Trying again.');
+
+      // Check if we have not missed an interface after good login.
+      self.SkipEmailScreen();
+      Wait(RandomRange(1000, 3000));
+
+      if self.IsAtLobby() then
+      begin
+        writeln('Lobby.Login(): We are now at the Lobby!');
+        Exit;
+      end;
+
+      // Check if incorrect Password was entered
+      self.IsAccountInvalid(True);
+
+      // Force clearing of the fields
+      self.ClearFields();
+
+      retry := true;
+      self.Login(username, password, retry);
+
+    end;
+
+  end;
 
 end;
 
