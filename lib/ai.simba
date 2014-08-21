@@ -17,7 +17,7 @@ Description:
   {$include_once core/smart.simba}
 {$ENDIF}
 
-function SetupRS(skipLoginCheck : boolean): boolean;
+function SetupRS(newInstance : boolean): boolean;
 var
   t := getSystemTime();
 begin
@@ -39,10 +39,12 @@ begin
       smartSetupDrawing();
   {$ENDIF}
 
-  if skipLoginCheck = false then
+  if newInstance = true then
   begin
     if (waitClientReady()) then
-      print('Client is ready.')
+    begin
+      print('Client is ready.');
+    end
     else begin
       print('Client is taking too long to load, terminating...');
       print('setupSRL(): '+toStr(result), TDebug.FOOTER);
