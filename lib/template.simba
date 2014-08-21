@@ -8,9 +8,7 @@ program template;
 {$i ai.simba}
 
 begin
-  // False - Skip Login Check
-  // True  - Wait for lobby to appear
-  SetupRS(False);
+  SetupRS();
 
 
 end.
