@@ -15,7 +15,6 @@ Description:
 {$include_once utilities/TSOP.simba}
 {$include_once interfaces/game.simba}
 
-=======
 {$include_once interfaces/minimap.simba}
 
 {$IFDEF SMART}
@@ -23,8 +22,6 @@ Description:
 {$ENDIF}
 
 function SetupRS(): boolean;
-=======
-function SetupRS(newInstance : boolean): boolean;
 var
   t := getSystemTime();
 begin
@@ -47,24 +44,15 @@ begin
   {$ENDIF}
 
   if (waitClientReady()) then
-    print('Client is ready.')
+  begin
+    print('Client is ready.');
+  end
   else begin
     print('Client is taking too long to load, terminating...');
-    print('setupSRL(): '+toStr(result), TDebug.FOOTER);
+    print('SetupRS(): '+toStr(result), TDebug.FOOTER);
     terminateScript();
-=======
-  if newInstance = true then
-  begin
-    if (waitClientReady()) then
-    begin
-      print('Client is ready.');
-    end
-    else begin
-      print('Client is taking too long to load, terminating...');
-      print('setupSRL(): '+toStr(result), TDebug.FOOTER);
-      terminateScript();
-    end;
   end;
+
 
   result := true;
   print('Setup RS in '+toStr(getSystemTime() - t)+'ms.');
