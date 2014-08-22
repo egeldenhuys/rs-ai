@@ -12,7 +12,9 @@ Description:
 {$include_once core/keyboard.simba}
 {$include_once utilities/types.simba}
 {$include_once core/debug.simba}
-{$include_once functions/find_item.simba}
+{$include_once utilities/TSOP.simba}
+{$include_once interfaces/game.simba}
+
 
 {$IFDEF SMART}
   {$include_once core/smart.simba}
