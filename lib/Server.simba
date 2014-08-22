@@ -1,0 +1,24 @@
+program Server;
+
+var
+  mySocket, myClient : integer;
+  a,b : string;
+
+begin
+  mySocket := CreateSocket();
+  BindSocket(mySocket, '127.0.0.1', '6260');
+  ListenSocket(mySocket);
+
+  myClient := AcceptSocket(mySocket);
+
+  SocketInfo(myClient, a, b);
+
+  writeln(a + ' ' + b);
+
+  writeln(RecvSocket(myClient));
+  SendSocket(myClient, 'Go away');
+
+  FreeSocket(myClient);
+  FreeSocket(mySocket);
+
+end.
