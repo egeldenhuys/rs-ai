@@ -12,15 +12,23 @@ Description:
 {$include_once core/keyboard.simba}
 {$include_once utilities/types.simba}
 {$include_once core/debug.simba}
+<<<<<<< HEAD
 {$include_once utilities/TSOP.simba}
 {$include_once interfaces/game.simba}
 
+=======
+{$include_once interfaces/minimap.simba}
+>>>>>>> interface/minimap
 
 {$IFDEF SMART}
   {$include_once core/smart.simba}
 {$ENDIF}
 
+<<<<<<< HEAD
 function SetupRS(): boolean;
+=======
+function SetupRS(newInstance : boolean): boolean;
+>>>>>>> interface/minimap
 var
   t := getSystemTime();
 begin
@@ -42,12 +50,26 @@ begin
       smartSetupDrawing();
   {$ENDIF}
 
+<<<<<<< HEAD
   if (waitClientReady()) then
     print('Client is ready.')
   else begin
     print('Client is taking too long to load, terminating...');
     print('setupSRL(): '+toStr(result), TDebug.FOOTER);
     terminateScript();
+=======
+  if newInstance = true then
+  begin
+    if (waitClientReady()) then
+    begin
+      print('Client is ready.');
+    end
+    else begin
+      print('Client is taking too long to load, terminating...');
+      print('setupSRL(): '+toStr(result), TDebug.FOOTER);
+      terminateScript();
+    end;
+>>>>>>> interface/minimap
   end;
 
   result := true;

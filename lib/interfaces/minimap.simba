@@ -1,0 +1,17 @@
+(*
+Minimap
+=======
+
+Description:
+  provides functions for using the minimap and also
+  functions for the things on the same interface as
+  the minimap
+*)
+
+{$include_once interfaces.simba}
+{$include_once ../utilities/types.simba}
+
+type
+  Minimap = TRSInterface;
+
+
