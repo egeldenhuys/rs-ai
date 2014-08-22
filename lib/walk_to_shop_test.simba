@@ -19,6 +19,8 @@ begin
 
   writeln('Please Enter Account details');
 
+  Minimap.WaitForCompass();
+
   while true do
   begin
     // Lodestone to Lumbridge

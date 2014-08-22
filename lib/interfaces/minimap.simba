@@ -10,13 +10,14 @@ Description:
 
 {$include_once interfaces.simba}
 {$include_once ../utilities/types.simba}
+{$include_once ../utilities/TSOP.simba}
 
 type
   Minimap = TRSInterface;
 
 
 (*
-FindCompass
+Minimap.FindCompass
 ===========
 
 Description:
@@ -32,7 +33,7 @@ Returns:
   The center of the compass as a TPoint
 
 *)
-function FindCompass() : TPoint;
+function Minimap.FindCompass() : TPoint;
 var
   compass : TSOP;
   loc : TPoint;
@@ -45,11 +46,53 @@ begin
   // However this is not yet the centre of the compass!
   loc := compass.Find(0, 0, 799, 599);
 
+  if loc.x = -1 OR loc.y = -1 then
+  begin
+    writeLn('FindCompass(): Failed to find. Exit function');
+    Exit;
+  end;
+
   // Get the centre of the compass
   loc.x := loc.x - 15;
   loc.y := loc.y + 16;
 
+  writeln('FindCompass(): Found the compass!');
   Result := loc;
+
+end;
+
+(*
+Minimap.WaitForCompass
+======================
+
+Description:
+  Waits for the game to start once the play button has been pressed
+
+*)
+function Minimap.WaitForCompass() : boolean;
+var
+  time : UInt32;
+  timeOut : integer = 30000;
+
+begin
+
+  time := GetSystemTime();
+
+  while time < GetSystemTime() + timeOut do
+  begin
+
+    if self.FindCompass().x > -1 then
+      wait(3000);
+      Result := true;
+      Exit;
+
+      wait(500);
+    time := GetSystemTime();
+  end;
+
+  writeln('Minimap.WaitForCompass(): After 30 seconds could not find Compass!');
+  Result := false;
+
 
 end;
 
