@@ -1,0 +1,20 @@
+(*
+Game
+====
+
+Description:
+  This file contains functions realting to the game itself.
+  Such as is the player logged in.
+*)
+
+{$include_once interfaces.simba}
+
+Type
+  Game = TRSInterface;
+
+function Game.IsLoggedIn() : boolean;
+begin
+
+end;
+
+
