@@ -6,11 +6,13 @@ Description:
   This file includes the Resources required to build an AI Method
 
 *)
+{$include_once interfaces/lobby.simba}
 {$include_once core/client.simba}
 {$include_once core/mouse.simba}
 {$include_once core/keyboard.simba}
 {$include_once utilities/types.simba}
 {$include_once core/debug.simba}
+{$include_once functions/find_item.simba}
 
 {$IFDEF SMART}
   {$include_once core/smart.simba}
@@ -47,7 +49,7 @@ begin
   end;
 
   result := true;
-  print('Setup SRL in '+toStr(getSystemTime() - t)+'ms.');
-  print('setupSRL(): '+toStr(result), TDebug.FOOTER);
+  print('Setup RS in '+toStr(getSystemTime() - t)+'ms.');
+  print('SetupRS(): '+toStr(result), TDebug.FOOTER);
 end;
 
