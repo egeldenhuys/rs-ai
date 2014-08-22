@@ -48,15 +48,20 @@ begin
 
   if loc.x = -1 OR loc.y = -1 then
   begin
-    writeLn('FindCompass(): Failed to find. Exit function');
-    Exit;
+
+    writeLn('FindCompass(): Failed to find.');
+    loc.x := -1;
+    loc.y := -1;
+  end
+  else begin
+    writeln('FindCompass(): Found the compass!');
+    // Get the centre of the compass
+    loc.x := loc.x - 15;
+    loc.y := loc.y + 16;
+
+    writeln('Compass: (' + toStr(loc.x) + ', ' + toStr(loc.y) + ')');
   end;
 
-  // Get the centre of the compass
-  loc.x := loc.x - 15;
-  loc.y := loc.y + 16;
-
-  writeln('FindCompass(): Found the compass!');
   Result := loc;
 
 end;
@@ -71,28 +76,33 @@ Description:
 *)
 function Minimap.WaitForCompass() : boolean;
 var
-  time : UInt32;
+  time : integer;
   timeOut : integer = 30000;
 
 begin
-
+  result := false;
   time := GetSystemTime();
 
-  while time < GetSystemTime() + timeOut do
+  while ((time + timeOut) > GetSystemTime()) AND (result = False) do
   begin
 
-    if self.FindCompass().x > -1 then
-      wait(3000);
-      Result := true;
-      Exit;
+  writeln('time: ' + toStr(time));
+  writeln('time + timeOut: ' + toStr(time + timeOut));
+  writeln('GetSystemTime(): ' + toStr(GetSystemTime()));
+  writeln('result: ' + toStr(result));
 
-      wait(500);
-    time := GetSystemTime();
+
+    if self.FindCompass().x > -1 then
+    begin
+      writeln('Minimap.WaitForCompass(): True');
+      result := True;
+    end;
+
+    wait(500);
   end;
 
-  writeln('Minimap.WaitForCompass(): After 30 seconds could not find Compass!');
-  Result := false;
-
+  if result = false then
+    writeln('Minimap.WaitForCompass(): After 30 seconds could not find Compass!');
 
 end;
 

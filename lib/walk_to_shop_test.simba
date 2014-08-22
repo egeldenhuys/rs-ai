@@ -19,13 +19,19 @@ begin
 
   writeln('Please Enter Account details');
 
-  Minimap.WaitForCompass();
+  if Minimap.WaitForCompass() = false then
+    Exit;
 
   while true do
   begin
+
+    if Minimap.WaitForCompass() = false then
+      Exit;
+
     // Lodestone to Lumbridge
     btnHomeTeleport.Click();
     wait(3000);
+
     btnLumbyHome.Click();
     wait(20000);
 
@@ -41,8 +47,7 @@ begin
     path[4] := [72, 217];
     path[5] := [34, 163];
     path[6] := [222, 163];
-    path[7] := [221, 114];
-    path[8] := [218, 211];
+    path[7] := [190, 157];
 
     for i := 0 to length(path) do
     begin
