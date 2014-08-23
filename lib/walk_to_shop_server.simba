@@ -1,0 +1,46 @@
+program walk_to_shop_server;
+
+var
+  mySocket, myClient : integer;
+  a,b : string;
+  clients : array[0..1] of integer;
+  readyCount : integer;
+
+
+begin
+  readyCount := 0;
+
+  mySocket := CreateSocket();
+  BindSocket(mySocket, '127.0.0.1', '6260');
+  ListenSocket(mySocket);
+
+  clients[0] := AcceptSocket(mySocket);
+
+  SocketInfo(clients[0], a, b);
+  writeln(a + ' ' + b);
+
+  SendSocket(clients[0], 'accepted');
+
+  if RecvSocket(clients[0]) = 'Ready' then
+    readyCount := 1;
+
+  ListenSocket(mySocket);
+
+  clients[1] := AcceptSocket(mySocket);
+
+  SocketInfo(clients[1], a, b);
+  writeln(a + ' ' + b);
+
+  if RecvSocket(clients[1]) = 'Ready' then
+    readyCount := 2;
+
+  SendSocket(clients[0], 'All Clients Ready');
+  SendSocket(clients[1], 'All Clients Ready');
+
+  FreeSocket(myClient);
+  FreeSocket(mySocket);
+
+  CloseSocket(myClient);
+  CloseSocket(mySocket);
+
+end.

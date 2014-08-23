@@ -13,8 +13,31 @@ var
   i : integer;
   btnHomeTeleport : TRSButton = [759, 22, 774, 36];
   btnLumbyHome : TRSButton = [328, 238, 347, 260];
+  mySocket : integer;
+  recvStr : string;
 
 begin
+  // Create a new socket
+  mySocket := CreateSocket();
+
+  // Connect to the server
+  ConnectSocket(mySocket, '127.0.0.1', '6260');
+
+  // Tell the server we are ready
+  SendSocket(mySocket, 'Ready');
+
+  // Wait for other clients to be ready (2)
+  SetSocketTimeOut(mySocket, 60000);
+
+  recvStr := RecvSocket(mySocket);
+  writeln(recvStr);
+
+  while recvStr <> 'All Clients Ready' do
+  begin
+    recvStr := RecvSocket(mySocket);
+    writeln(recvStr);
+  end;
+
   SetupRS();
 
   writeln('Please Enter Account details');
@@ -59,5 +82,10 @@ begin
         end;
     end;
   end;
+
+  // Free the resources
+  CloseSocket(mySocket);
+  FreeSocket(mySocket);
+
 
 end.
