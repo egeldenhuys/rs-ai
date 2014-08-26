@@ -104,9 +104,12 @@ begin
 
     end;
 
+    writeln('subPoints: ' + toStr(count) + '/' + toStr(Length(self.subPoints)));
+
     if count = Length(self.subPoints) then
     begin
       result := [TPA[i].x, TPA[i].y];
+
       // Exit the loop
       i := Length(TPA) - 1;
     end else

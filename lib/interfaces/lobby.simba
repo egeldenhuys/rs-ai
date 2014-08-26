@@ -10,6 +10,7 @@ Description:
 {$include_once interfaces.simba}
 {$include_once ../utilities/types.simba}
 {$include_once ../core/keyboard.simba}
+{$include_once minimap.simba}
 
 type
   Lobby = TRSInterface;
@@ -190,6 +191,10 @@ begin
 
   self.SelectTab(LOBBY_TAB_PLAYER_INFO);
   btnPlay.Click();
+
+  if Minimap.WaitForCompass() = false then
+    Exit;
+
 
 end;
 
@@ -489,7 +494,7 @@ begin
   timeDiff := 0;
   loggedIn := false;
 
-  while timeDiff < 10000 do
+  while timeDiff < 30000 do
   begin
     wait(RandomRange(500, 2000));
 

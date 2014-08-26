@@ -46,14 +46,15 @@ begin
   // However this is not yet the centre of the compass!
   loc := compass.Find(0, 0, 799, 599);
 
+  writeln(toStr(loc.x) + ', ' + toStr(loc.y));
+
   if (loc.x = -1) OR (loc.y = -1) then
   begin
-
     writeLn('FindCompass(): Failed to find.');
     loc.x := -1;
     loc.y := -1;
-  end
-  else begin
+  end else
+  begin
     writeln('FindCompass(): Found the compass!');
     // Get the centre of the compass
     loc.x := loc.x - 15;
