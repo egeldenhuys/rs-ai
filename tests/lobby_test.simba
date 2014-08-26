@@ -1,0 +1,48 @@
+program lobby_test;
+{$DEFINE SMART} // Use Smart
+
+{$IFDEF SMART}
+  {$DEFINE DX} // Use the DirectX plugin for Smart
+{$ENDIF}
+
+{$i ai.simba}
+
+CONST
+  KEY = '';
+
+var
+  username, password : string;
+  i : integer;
+
+begin
+  username := 'nlbh8QZwuMV7xg==';
+  password := 'ziN1OpUF';
+
+  rc2_decrypt(KEY, htSHA512, username);
+  rc2_decrypt(KEY, htSHA512, password);
+
+  SetupRS();
+
+  // Start from the login screen
+  Lobby.GoToLogin();
+
+  // Login, isAtLogin
+  Lobby.Login(username, password);
+
+  // Start from the Lobby screen
+  Lobby.GoToLogin();
+
+  // Login again
+  Lobby.Login(username, password);
+
+  // Tabs, isAtLobby
+  for i := 0 to 5 do
+    Lobby.SelectTab(i);
+
+  // Close
+  Lobby.Close();
+
+  // Invalid Password, Retry, Clear Fields
+  Lobby.Login('username', 'password');
+
+end.
