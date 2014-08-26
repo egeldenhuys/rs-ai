@@ -1,0 +1,14 @@
+program buy_feathers;
+{$DEFINE SMART} // Use Smart
+
+{$IFDEF SMART}
+  {$DEFINE DX} // Use the DirectX plugin for Smart
+{$ENDIF}
+
+{$i ../lib/ai.simba}
+
+begin
+  SetupRS();
+
+
+end.
