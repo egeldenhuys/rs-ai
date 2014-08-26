@@ -106,14 +106,11 @@ begin
 
     if count = Length(self.subPoints) then
     begin
-      //writeln('Item has been found: (' + toStr(TPA[i].x) + ', ' + toStr(TPA[i].y) + ')');
       result := [TPA[i].x, TPA[i].y];
-      Exit
+      // Exit the loop
+      i := Length(TPA) - 1;
     end else
-    begin
-      result := [-1, -1]
-
-    end;
+      result := [-1, -1];
 
   end;
 

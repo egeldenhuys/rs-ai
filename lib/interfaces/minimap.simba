@@ -46,7 +46,7 @@ begin
   // However this is not yet the centre of the compass!
   loc := compass.Find(0, 0, 799, 599);
 
-  if loc.x = -1 OR loc.y = -1 then
+  if (loc.x = -1) OR (loc.y = -1) then
   begin
 
     writeLn('FindCompass(): Failed to find.');
