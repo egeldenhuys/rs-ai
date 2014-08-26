@@ -15,7 +15,7 @@ type
   Lobby = TRSInterface;
 
 (*
-Lobby.IsAtLogin
+Lobby.isAtLogin
 ===============
 
 Description:
@@ -36,7 +36,7 @@ Example:
       exit;
 
 *)
-function Lobby.IsAtLogin() : boolean
+function Lobby.isAtLogin() : boolean
 // Static colours and coordinates used to identify the login screen
 const
   POINT_A : TPointInfo = [128, 233, 14143159];
@@ -72,7 +72,7 @@ end;
 
 
 (*
-Lobby.IsAtLobby
+Lobby.isAtLobby
 ===============
 
 Description:
@@ -88,7 +88,7 @@ Improvements that can be made:
   lobby, but the same for each lobby tab.
 
 *)
-function Lobby.IsAtLobby() : boolean;
+function Lobby.isAtLobby() : boolean;
 const
   POINT_A : TPointInfo = [114, 31, 379903];
   POINT_B : TPointInfo = [778, 35, 1451182];
@@ -101,7 +101,7 @@ begin
     if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
       if GetColor(POINT_C.x, POINT_C.y) = POINT_C.colour then
         begin
-          writeln('IsAtLobby(): True');
+          writeln('isAtLobby(): True');
           result := true;
         end;
 
@@ -157,7 +157,7 @@ begin
   btnArray[4] := btnClanChat;
   btnArray[5] := btnOptions;
 
-  if self.IsAtLobby() = false then
+  if self.isAtLobby() = false then
     writeln('Lobby.SelectTab(): Not at the lobby');
 
   btnArray[tabID].Click();
@@ -182,7 +182,7 @@ var
 
 begin
 
-  if self.IsAtLobby() = false then
+  if self.isAtLobby() = false then
   begin
     writeln('Lobby.Play(): Not at lobby. Exiting.');
     exit;
@@ -209,13 +209,14 @@ var
   btnClose : TRSButton = [766, 27, 777, 42];
 
 begin
-  if self.IsAtLobby() = false then
+  if self.isAtLobby() = false then
   begin
     writeln('Lobby.Close(): Not at Lobby. Exiting function.');
     Exit;
   end;
 
   btnClose.Click();
+  wait(RandomRange(1000, 3000));
 
 end;
 
@@ -237,7 +238,7 @@ var
 
 begin
 
-  if self.IsAtLogin() = false then
+  if self.isAtLogin() = false then
   begin
     writeln('ClearFields(): Not at the login. Can not clear fields');
     Exit;
@@ -268,7 +269,38 @@ begin
 end;
 
 (*
-Lobby.IsAccountInvalid
+Lobby.GoToLogin
+===============
+
+Description:
+  Goes to the login screen
+*)
+procedure Lobby.GoToLogin();
+var
+  btnRetry : TRSButton = [318, 412, 478, 433];
+begin
+
+  if self.isAtLobby() then
+    self.Close();
+
+  if Lobby.isWrongPassword() then
+  begin
+    btnRetry.Click();
+    wait(randomRange(1000, 3000));
+    self.ClearFields();
+  end
+
+  if self.isEmailScreenOpen() then
+  begin
+    self.SkipEmailScreen();
+    self.Close();
+  end
+
+  wait(RandomRange(1000, 3000));
+end;
+
+(*
+Lobby.isWrongPassword
 ======================
 
 Description:
@@ -276,36 +308,62 @@ Description:
   If true it clicks 'retry' and clears the fields
 
 *)
-function Lobby.IsAccountInvalid(leaveFields : boolean = True) : boolean;
-var
-  btnRetry : TRSButton = [318, 412, 478, 433];
-
+function Lobby.isWrongPassword() : boolean;
 const
   POINT_A : TPointInfo = [399, 184, 7920629];
   POINT_B : TPointInfo = [314, 210, 2365698];
   POINT_C : TPointInfo = [465, 284, 16777215];
 
 begin
-  result := false;
+
 
   if GetColor(POINT_A.x, POINT_A.y) = POINT_A.colour then
     if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
       if GetColor(POINT_C.x, POINT_C.y) = POINT_C.colour then
         begin
-          writeln('Lobby.IsAccountInvalid(): True');
+          writeln('Lobby.isWrongPassword(): True');
           result := true;
         end else
-          writeln('Lobby.IsAccountInvalid(): False');
+        begin
+          writeln('Lobby.isWrongPassword(): False');
+          result := false;
+        end
 
-  if result = True then
-  begin
-    btnRetry.Click();
-    wait(RandomRange(1000, 3000));
 
-    if leaveFields = False then
-      Lobby.ClearFields();
+end;
 
-  end;
+(*
+Lobby.isEmailScreenOpen
+=======================
+
+Description:
+  Checks if the Email validation screen at the login
+  is open
+
+Returns:
+  True - Screen is open
+  False - Screen is not open
+
+*)
+function Lobby.isEmailScreenOpen() : boolean;
+const
+  POINT_A : TPointInfo = [271, 54, 376302];
+  POINT_B : TPointInfo = [532, 174, 200894];
+  POINT_C : TPointInfo = [191, 405, 2432008];
+
+begin
+
+if GetColor(POINT_A.x, POINT_A.y) = POINT_A.colour then
+    if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
+      if GetColor(POINT_C.x, POINT_C.y) = POINT_C.colour then
+        begin
+          writeln('isEmailScreenOpen(): True...');
+          result := True
+        end else
+        begin
+          writeln('isEmailScreenOpen(): False.');
+          result := False
+        end
 
 end;
 
@@ -317,27 +375,50 @@ Description:
   If the email validation screen is open it clicks 'skip'
 
 *)
-
 Procedure Lobby.SkipEmailScreen();
 var
   btnRetry : TRSButton = [359, 416, 437, 437];
 
-const
-  POINT_A : TPointInfo = [271, 54, 376302];
-  POINT_B : TPointInfo = [532, 174, 200894];
-  POINT_C : TPointInfo = [191, 405, 2432008];
+begin
+  if self.isEmailScreenOpen() then
+    btnRetry.Click();
 
+end;
+
+(*
+Lobby.RetryLogin
+================
+
+Description:
+  Tries to log in again
+
+*)
+procedure Lobby.RetryLogin(username, password : string; retry : boolean);
 begin
 
-  if GetColor(POINT_A.x, POINT_A.y) = POINT_A.colour then
-    if GetColor(POINT_B.x, POINT_B.y) = POINT_B.colour then
-      if GetColor(POINT_C.x, POINT_C.y) = POINT_C.colour then
-        begin
-          writeln('SkipEmailScreen(): Skipping...');
-          btnRetry.Click();
-        end else
-          writeln('SkipEmailScreen(): Not Detected.');
+  // Prevent infinite loop.
+  if retry = false then
+  begin
+    writeln('Lobby.RetryLogin(): Trying again.');
 
+    // Check if we have not missed an interface after good login.
+    self.SkipEmailScreen();
+    Wait(RandomRange(1000, 3000));
+
+    if self.isAtLobby() then
+    begin
+      writeln('Lobby.RetryLogin(): We are now at the Lobby!');
+      Exit;
+    end;
+
+    // Check if incorrect Password was entered
+    if self.isWrongPassword() then
+      self.GoToLogin();
+
+    retry := true;
+    self.Login(username, password, retry);
+
+  end;
 end;
 
 (*
@@ -363,7 +444,7 @@ Example:
     Login(username, password);
 
 *)
-procedure Lobby.Login(username, password : string; retry : boolean = false)
+procedure Lobby.Login(username, password : string; retry : boolean = false);
 // Static coordiantes for the text fields
 const
   TB_USER : TBox = [272, 255, 520, 277];
@@ -381,13 +462,14 @@ begin
   else
     writeln('Retry = False');
 
-  if self.IsAtLobby() = true then
+  if self.isAtLobby() = true then
   begin
     writeln('Lobby.Login(): Already at the lobby');
     exit;
-  end;
+  end else
+    self.GoToLogin();
 
-  if self.IsAtLogin() = false then
+  if self.isAtLogin() = false then
   begin
     writeln('Lobby.Login(): Not at the login screen. Exiting');
     exit;
@@ -411,14 +493,14 @@ begin
   begin
     wait(RandomRange(500, 2000));
 
-    if self.IsAtLobby() then
+    if self.isAtLobby() then
     begin
       writeln('Lobby.Login(): Succesfully logged in.');
       loggedIn := true;
       break;
     end;
 
-    if self.IsAccountInvalid() then
+    if self.isWrongPassword() then
     begin
       writeln('Lobby.Login(): Login Failed. Please Check account details');
       loggedIn := false;
@@ -432,36 +514,8 @@ begin
 
   // Retry the login. ONCE.
   if loggedIn = false then
-  begin
-    writeln('Lobby.Login(): Failed to log in.');
+    self.RetryLogin(username, password, retry);
 
-    // Prevent infinite loop.
-    if retry = false then
-    begin
-      writeln('Lobby.Login(): Trying again.');
-
-      // Check if we have not missed an interface after good login.
-      self.SkipEmailScreen();
-      Wait(RandomRange(1000, 3000));
-
-      if self.IsAtLobby() then
-      begin
-        writeln('Lobby.Login(): We are now at the Lobby!');
-        Exit;
-      end;
-
-      // Check if incorrect Password was entered
-      self.IsAccountInvalid(True);
-
-      // Force clearing of the fields
-      self.ClearFields();
-
-      retry := true;
-      self.Login(username, password, retry);
-
-    end;
-
-  end;
 
 end;
 
