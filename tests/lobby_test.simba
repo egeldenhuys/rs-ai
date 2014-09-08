@@ -1,3 +1,11 @@
+(*
+Lobby Test
+==========
+
+Description:
+  Tests the functions of the lobby
+
+*)
 program lobby_test;
 {$DEFINE SMART} // Use Smart
 

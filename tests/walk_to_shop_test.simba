@@ -1,3 +1,19 @@
+(*
+Walk To Shop Test
+=================
+
+WARNING:
+  This script uses static coordinates for walking!
+
+Description:
+  Repeatedly walks to the Lumbridge fishing shop
+
+Method:
+  Teleport to Lumbridge via Lodestone
+  Walk to the fishing shop using static screen coordinates
+  Repeat
+
+*)
 program walk_to_shop_test;
 {$DEFINE SMART} // Use Smart
 
@@ -6,6 +22,8 @@ program walk_to_shop_test;
 {$ENDIF}
 
 {$i ../lib/ai.simba}
+CONST
+  KEY = '';
 
 var
   btnCompass : TRSButton = [602, 22, 624, 43];
@@ -13,11 +31,19 @@ var
   i : integer;
   btnHomeTeleport : TRSButton = [759, 22, 774, 36];
   btnLumbyHome : TRSButton = [328, 238, 347, 260];
+  username, password : string;
 
 begin
+  username := 'nlbh8QZwuMV7xg==';
+  password := 'ziN1OpUF';
+
+  rc2_decrypt(KEY, htSHA512, username);
+  rc2_decrypt(KEY, htSHA512, password);
+
   SetupRS();
 
-  writeln('Please Enter Account details');
+  Lobby.Login(username, password);
+  Lobby.Play();
 
   if Minimap.WaitForCompass() = false then
     Exit;
