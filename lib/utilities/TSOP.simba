@@ -82,6 +82,8 @@ var
 
 begin
 
+  result := [-1, -1];
+
   // Find all main colours
   FindColors(TPA, self.mainColour, x1, y1, x2, y2);
 
@@ -108,12 +110,13 @@ begin
 
     if count = Length(self.subPoints) then
     begin
+      // Result was (-1, -1) before this.
+      // Change it to the real value now
       result := [TPA[i].x, TPA[i].y];
 
-      // Exit the loop
+      // Exit the main point loop, returning the value
       i := Length(TPA) - 1;
-    end else
-      result := [-1, -1];
+    end;
 
   end;
 
