@@ -5,7 +5,7 @@ program lobby_test;
   {$DEFINE DX} // Use the DirectX plugin for Smart
 {$ENDIF}
 
-{$i ai.simba}
+{$i ../lib/ai.simba}
 
 CONST
   KEY = '';
@@ -23,26 +23,38 @@ begin
 
   SetupRS();
 
-  // Start from the login screen
+  writeln('===== BEGIN TEST: Go to Login Screen =====');
   Lobby.GoToLogin();
+  writeln('=====   END TEST: Go to Login Screen =====');
 
-  // Login, isAtLogin
+  writeln('===== BEGIN TEST: Login (Success)    =====');
   Lobby.Login(username, password);
+  writeln('=====   END TEST: Login (Success)    =====');
 
-  // Start from the Lobby screen
+  writeln('===== BEGIN TEST: Go to Login Screen =====');
   Lobby.GoToLogin();
+  writeln('=====   END TEST: Go to Login Screen =====');
 
-  // Login again
+  writeln('===== BEGIN TEST: Login (Success)    =====');
   Lobby.Login(username, password);
+  writeln('=====   END TEST: Login (Success)    =====');
 
-  // Tabs, isAtLobby
+  writeln('===== BEGIN TEST: Click all tabs     =====');
   for i := 0 to 5 do
     Lobby.SelectTab(i);
+  writeln('=====   END TEST: Click all tabs     =====');
 
-  // Close
+  writeln('===== BEGIN TEST: Close Lobby        =====');
   Lobby.Close();
+  writeln('=====   END TEST: Close Lobby        =====');
 
-  // Invalid Password, Retry, Clear Fields
+  writeln('===== BEGIN TEST: Login (Fail)       =====');
   Lobby.Login('username', 'password');
+  writeln('=====   END TEST: Login (Fail)       =====');
 
+  writeln('===== BEGIN TEST: Go To Login        =====');
+  Lobby.GoToLogin();
+  writeln('=====   END TEST: Go To Login        =====');
+
+  writeln('No Runtime Errors encountered! Good!');
 end.
