@@ -1,6 +1,8 @@
 RuneScape Artificial Intelligence (RS-AI)
 =========================================
 
+**No further work will be done on this repository after 2014/09/08**
+
 # Description:
 This project aims to provide functions for interacting with the game RuneScape.
 It uses Simba to execute commands.
