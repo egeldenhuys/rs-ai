@@ -1,0 +1,68 @@
+(*
+Lobby Test
+==========
+
+Description:
+  Tests the functions of the lobby
+
+*)
+program lobby_test;
+{$DEFINE SMART} // Use Smart
+
+{$IFDEF SMART}
+  {$DEFINE DX} // Use the DirectX plugin for Smart
+{$ENDIF}
+
+{$i ../lib/ai.simba}
+
+CONST
+  KEY = '';
+
+var
+  username, password : string;
+  i : integer;
+
+begin
+  username := 'nlbh8QZwuMV7xg==';
+  password := 'ziN1OpUF';
+
+  rc2_decrypt(KEY, htSHA512, username);
+  rc2_decrypt(KEY, htSHA512, password);
+
+  SetupRS();
+
+  writeln('===== BEGIN TEST: Go to Login Screen =====');
+  Lobby.GoToLogin();
+  writeln('=====   END TEST: Go to Login Screen =====');
+
+  writeln('===== BEGIN TEST: Login (Success)    =====');
+  Lobby.Login(username, password);
+  writeln('=====   END TEST: Login (Success)    =====');
+
+  writeln('===== BEGIN TEST: Go to Login Screen =====');
+  Lobby.GoToLogin();
+  writeln('=====   END TEST: Go to Login Screen =====');
+
+  writeln('===== BEGIN TEST: Login (Success)    =====');
+  Lobby.Login(username, password);
+  writeln('=====   END TEST: Login (Success)    =====');
+
+  writeln('===== BEGIN TEST: Click all tabs     =====');
+  for i := 0 to 5 do
+    Lobby.SelectTab(i);
+  writeln('=====   END TEST: Click all tabs     =====');
+
+  writeln('===== BEGIN TEST: Close Lobby        =====');
+  Lobby.Close();
+  writeln('=====   END TEST: Close Lobby        =====');
+
+  writeln('===== BEGIN TEST: Login (Fail)       =====');
+  Lobby.Login('username', 'password');
+  writeln('=====   END TEST: Login (Fail)       =====');
+
+  writeln('===== BEGIN TEST: Go To Login        =====');
+  Lobby.GoToLogin();
+  writeln('=====   END TEST: Go To Login        =====');
+
+  writeln('No Runtime Errors encountered! Good!');
+end.

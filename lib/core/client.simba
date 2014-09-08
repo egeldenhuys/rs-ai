@@ -9,8 +9,9 @@ The source for this file can be found `here <https://github.com/SRL/SRL-6/blob/m
 
 *)
 
-{$include_once core/debug.simba}
+{$include_once debug.simba}
 {$include_once ../interfaces/lobby.simba}
+{$include_once ../interfaces/minimap.simba}
 
 (*
 isClientReady
@@ -37,10 +38,8 @@ Example:
 *)
 function isClientReady(): boolean;
 begin
-  //writeln('isClientReady(): CLIENT FORCE READY = TRUE');
-  //result := true;
 
-  Result := Lobby.IsAtLogin() or Lobby.IsAtLobby();
+  Result := Lobby.IsAtLogin() OR Lobby.IsAtLobby() or (Minimap.FindCompass().x > -1);
 end;
 
 (*

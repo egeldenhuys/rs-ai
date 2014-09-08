@@ -6,17 +6,22 @@ Description:
   This file includes the Resources required to build an AI Method
 
 *)
+{$include_once interfaces/lobby.simba}
 {$include_once core/client.simba}
 {$include_once core/mouse.simba}
 {$include_once core/keyboard.simba}
 {$include_once utilities/types.simba}
 {$include_once core/debug.simba}
+{$include_once utilities/TSOP.simba}
+{$include_once interfaces/game.simba}
+
+{$include_once interfaces/minimap.simba}
 
 {$IFDEF SMART}
   {$include_once core/smart.simba}
 {$ENDIF}
 
-function SetupRS(skipLoginCheck : boolean): boolean;
+function SetupRS(): boolean;
 var
   t := getSystemTime();
 begin
@@ -38,19 +43,19 @@ begin
       smartSetupDrawing();
   {$ENDIF}
 
-  if skipLoginCheck = false then
+  if (waitClientReady()) then
   begin
-    if (waitClientReady()) then
-      print('Client is ready.')
-    else begin
-      print('Client is taking too long to load, terminating...');
-      print('setupSRL(): '+toStr(result), TDebug.FOOTER);
-      terminateScript();
-    end;
+    print('Client is ready.');
+  end
+  else begin
+    print('Client is taking too long to load, terminating...');
+    print('SetupRS(): '+toStr(result), TDebug.FOOTER);
+    terminateScript();
   end;
 
+
   result := true;
-  print('Setup SRL in '+toStr(getSystemTime() - t)+'ms.');
-  print('setupSRL(): '+toStr(result), TDebug.FOOTER);
+  print('Setup RS in '+toStr(getSystemTime() - t)+'ms.');
+  print('SetupRS(): '+toStr(result), TDebug.FOOTER);
 end;
 

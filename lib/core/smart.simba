@@ -364,7 +364,6 @@ begin
   __smartCurrentTarget := smartSpawnClient(path, stringReplace(PluginPath, '\', '/', [rfReplaceAll]),
                                            params[0], ',' + params[1], w, h, smartInitSeq, '', '', plugins);
 
-  wait(3000);
 
   if (__smartCurrentTarget <> 0) then
   begin

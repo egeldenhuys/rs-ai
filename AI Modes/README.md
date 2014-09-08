@@ -1,0 +1,1 @@
+This directory should contain AI Modes, developed by the client.

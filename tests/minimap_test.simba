@@ -1,0 +1,15 @@
+program minimap_test;
+{$DEFINE SMART} // Use Smart
+
+{$IFDEF SMART}
+  {$DEFINE DX} // Use the DirectX plugin for Smart
+{$ENDIF}
+
+{$i ../lib/ai.simba}
+
+begin
+  SetupRS(False); // Open RuneScape in smart or check if
+             // it has been selected by the crosshair.
+
+
+end.

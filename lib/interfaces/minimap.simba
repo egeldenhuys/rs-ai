@@ -1,0 +1,111 @@
+(*
+Minimap
+=======
+
+Description:
+  provides functions for using the minimap and also
+  functions for the things on the same interface as
+  the minimap
+*)
+
+{$include_once interfaces.simba}
+{$include_once ../utilities/types.simba}
+{$include_once ../utilities/TSOP.simba}
+
+type
+  Minimap = TRSInterface;
+
+
+(*
+Minimap.FindCompass
+===========
+
+Description:
+  This function looks for the compass in the game screen
+  and returns the center
+
+Example:
+  loc := FindCompas();
+
+  Mouse(loc.x, loc.y, MOUSE_LEFT, 10);
+
+Returns:
+  The center of the compass as a TPoint
+
+*)
+function Minimap.FindCompass() : TPoint;
+var
+  compass : TSOP;
+  loc : TPoint;
+
+begin
+  compass.mainColour := 2173229;
+  compass.AddPoint(-3, -2, 2370865);
+  compass.AddPoint(0, -1, 6321277);
+
+  // However this is not yet the centre of the compass!
+  loc := compass.Find(0, 0, 799, 599);
+
+  writeln(toStr(loc.x) + ', ' + toStr(loc.y));
+
+  if (loc.x = -1) OR (loc.y = -1) then
+  begin
+    writeLn('FindCompass(): Failed to find.');
+    loc.x := -1;
+    loc.y := -1;
+  end else
+  begin
+    writeln('FindCompass(): Found the compass!');
+    // Get the centre of the compass
+    loc.x := loc.x - 15;
+    loc.y := loc.y + 16;
+
+    writeln('Compass: (' + toStr(loc.x) + ', ' + toStr(loc.y) + ')');
+  end;
+
+  Result := loc;
+
+end;
+
+(*
+Minimap.WaitForCompass
+======================
+
+Description:
+  Waits for the game to start once the play button has been pressed
+
+*)
+function Minimap.WaitForCompass() : boolean;
+var
+  time : integer;
+  timeOut : integer = 30000;
+
+begin
+  result := false;
+  time := GetSystemTime();
+
+  while ((time + timeOut) > GetSystemTime()) AND (result = False) do
+  begin
+
+  writeln('time: ' + toStr(time));
+  writeln('time + timeOut: ' + toStr(time + timeOut));
+  writeln('GetSystemTime(): ' + toStr(GetSystemTime()));
+  writeln('result: ' + toStr(result));
+
+
+    if self.FindCompass().x > -1 then
+    begin
+      writeln('Minimap.WaitForCompass(): True');
+      result := True;
+    end;
+
+    wait(500);
+  end;
+
+  if result = false then
+    writeln('Minimap.WaitForCompass(): After 30 seconds could not find Compass!');
+
+end;
+
+
+
