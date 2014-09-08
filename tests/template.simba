@@ -1,3 +1,11 @@
+(*
+Template
+========
+
+Description:
+  .
+
+*)
 program template;
 {$DEFINE SMART} // Use Smart
 
@@ -5,7 +13,7 @@ program template;
   {$DEFINE DX} // Use the DirectX plugin for Smart
 {$ENDIF}
 
-{$i ai.simba}
+{$i ../ai.simba}
 
 begin
   SetupRS();
