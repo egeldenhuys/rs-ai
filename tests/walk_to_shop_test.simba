@@ -5,7 +5,7 @@ program walk_to_shop_test;
   {$DEFINE DX} // Use the DirectX plugin for Smart
 {$ENDIF}
 
-{$i ai.simba}
+{$i ../lib/ai.simba}
 
 var
   btnCompass : TRSButton = [602, 22, 624, 43];

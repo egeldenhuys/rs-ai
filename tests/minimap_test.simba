@@ -5,7 +5,7 @@ program minimap_test;
   {$DEFINE DX} // Use the DirectX plugin for Smart
 {$ENDIF}
 
-{$i ai.simba}
+{$i ../lib/ai.simba}
 
 begin
   SetupRS(False); // Open RuneScape in smart or check if
