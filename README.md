@@ -1,4 +1,4 @@
-RuneScape Artificial Intelligence (RS-AI)
+RuneScape ~~Artificial Intelligence (RS-AI)~~ Simba Scripts
 =========================================
 
 **No further work will be done on this repository after 2014/09/08**
@@ -9,7 +9,7 @@ It uses Simba to execute commands.
 
 # Instructions:
 
-1. Follow the guide [here](https://villavu.com/forum/showthread.php?t=47714) to install 
+1. Follow the guide [here](https://villavu.com/forum/showthread.php?t=47714) to install
 and setup Simba. Make sure you are using the Legacy mode option in RuneScape for RS-AI.
 1. If using DirectX display mode in RuneScape download the DirectX plugin from [here](https://villavu.com/forum/showthread.php?t=107256) and place
  it in `<Simba install directory>/Plugins/`
@@ -20,7 +20,7 @@ and setup Simba. Make sure you are using the Legacy mode option in RuneScape for
 
 # Troubleshooting:
 ```
-PROBLEM: After starting a script using SMART the 
+PROBLEM: After starting a script using SMART the
          console prints `Failed to Spawn a SMART client' and then terminates.
 
 SOLUTION: Wait until SMART has finished loading and then run the script again
@@ -34,4 +34,4 @@ This project is purely for educational purposes and is not intended to gain and 
 advantage in RuneScape or affect the RuneScape economy in any way. By using this
 project for your own research and learning I will take no responsibility for the way
 it is used. I do not encourage rule breaking in any of the games owned and developed by
-Jagex Ltd. 
+Jagex Ltd.
